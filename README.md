@@ -1,12 +1,16 @@
+```sh
+rails new <APP_NAME> -m path/to/gnarly.rb --skip-test-unit --database=postgresql
+```
+
 # Run rails option w/o TestUnit - .railsrc?
 # bash script or alias which will run template? system command in ruby script?
 #
 # TODO: what happens when you add a gem via the DSL already in the Gemfile?
 # Install Gems
-# - pg
+# - pg--
 # ** Dev/Test
 # - bullet
-# - bundler-audit
+# - bundler-audit--
 # - capybara
 # - database_cleaner # ?
 # - dotenv-rails
@@ -28,7 +32,8 @@
 #
 # ruby-version--
 # change application.css to .scss--
-# Postgres/DB config
+# Postgres/DB config--
+
 # dotenv config
 # rspec config
 # shoulda config

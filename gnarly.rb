@@ -28,6 +28,11 @@ gem_group :development, :test do
   # gem 'simplecov', require: false
 end
 
+# Set up database configuration
+remove_file "config/database.yml"
+copy_file "templates/database.yml", "config/database.yml"
+gsub_file "config/database.yml", "__application_name__", "#{app_name}"
+
 # Remove sqlite gem, if present
 gsub_file "Gemfile", /.*sqlite.*\n/, ""
 
