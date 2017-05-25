@@ -8,7 +8,6 @@ Install Gems
 - bullet
 - capybara
 - database_cleaner
-- factory_girl_rails
 - pronto
 - pronto-brakeman
 - pronto-rubocop
@@ -22,7 +21,6 @@ Install Gems
 Configuration
 ---
 shoulda config
-factory girl config
 capybara config
 database cleaner config
 circle config
@@ -31,11 +29,13 @@ scss-lint config
 simplecov config
 pronto config - script and config
 bullet config
-docker file
-status/health endpoint?
 
 Post-install instructions
 access token for pronto on circle ci
+
+docker file
+status/health endpoint?
+
 
 ## Done
 Gems
@@ -46,6 +46,7 @@ Gems
 - pry-rails
 - rspec-its
 - rspec-rails
+- factory_girl_rails
 
 Configuration
 ---
@@ -61,3 +62,4 @@ Postgres/DB config
 dotenv config
 .rspec file
 rspec config
+factory girl config

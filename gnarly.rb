@@ -13,7 +13,7 @@ gem_group :development, :test do
   # gem 'capybara'
   # gem 'database_cleaner'
   gem 'dotenv-rails'
-  # gem 'factory_girl_rails'
+  gem 'factory_girl_rails'
   # gem 'pronto'
   # gem 'pronto-brakeman', require: false
   # gem 'pronto-rubocop', require: false
@@ -57,6 +57,9 @@ run "bundle install"
 run "rails generate rspec:install"
 remove_file ".rspec"
 copy_file "templates/.rspec", ".rspec"
+
+# FactoryGirl
+copy_file "templates/spec/support/factory_girl.rb", "spec/support/factory_girl.rb"
 
 # Retrieve all gems and set up git
 after_bundle do
