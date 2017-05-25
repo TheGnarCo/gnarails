@@ -123,8 +123,23 @@ append_to_file "spec/rails_helper.rb" do
     "Capybara.default_max_wait_time = 3\n"
 end
 
-# Retrieve all gems and set up git
+# Retrieve all gems, set up git, display next steps
 after_bundle do
   remove_dir "test"
   git :init
+  puts ""
+  puts "  _____     __        _     ____     ____     "
+  puts " / / \\ \\   |  \\      | |   /    \\   |    \\    "
+  puts "| |  | |   |   \\     | |  |  /\\  |  | |\\  \\   "
+  puts "| |   -    |    \\    | |  | |  | |  | | |  |  "
+  puts "| |        |  |\\ \\   | |  |  __| |  | |/  /   "
+  puts "| |  / --  |  | \\ \\  | |  | |  | |  |    /    "
+  puts "| |    \\ \\ |  |  \\ \\ | |  | |  | |  | |\\ \\    "
+  puts " \\ \\   | | |  |   \\ \\| |  | |  | |  | | \\ \\   "
+  puts "  \\  --/ / |  |    \\   |  | |  | |  | |  \\ \\  "
+  puts "   -----/  |__|     \\__|  |_|  |_|  |_|   \\_\\ "
+
+  puts "\n\nNEXT STEPS"
+  puts "=========="
+  puts "Follow the post-install instructions to set up circle to allow gnarbot to comment on PRs. https://github.com/TheGnarCo/gnarails#post-install"
 end

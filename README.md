@@ -22,8 +22,8 @@ brew install cmake
   - Generate token.
   - Store/copy the token temporarily.
 
-* Store the token value in circle
-  - Find the repo settings
-  - Build Settings > Environment Variables
-  - Add Variable
-  - Name the variable `PRONTO_GITHUB_ACCESS_TOKEN` with the value from the previous Personal Access Token
+* Store the token value in circle.
+  - Find the repo settings.
+  - Build Settings > Environment Variables.
+  - Add Variable.
+  - Name the variable `PRONTO_GITHUB_ACCESS_TOKEN` with the value from the previous Personal Access Token.
