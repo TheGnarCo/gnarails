@@ -25,7 +25,7 @@ gem_group :development, :test do
   gem 'scss_lint', require: false
   # gem 'selenium-webdriver'
   gem 'shoulda-matchers'
-  # gem 'simplecov', require: false
+  gem 'simplecov', require: false
 end
 
 # Set up database configuration
@@ -96,6 +96,16 @@ copy_file "templates/script/ci_pronto", "script/ci_pronto"
 
 # Brakeman CI script
 copy_file "templates/script/brakeman", "script/brakeman"
+
+# Simplecov
+prepend_to_file "spec/spec_helper.rb" do
+  "require \"simplecov\"\n\n# save to CircleCI's artifacts directory if we're on CircleCI\n"\
+    "if ENV[\"CIRCLE_ARTIFACTS\"]\n"\
+    "  dir = File.join(ENV[\"CIRCLE_ARTIFACTS\"], \"coverage\")\n"\
+    "  SimpleCov.coverage_dir(dir)\n"\
+    "end\n\n"\
+    "SimpleCov.start \"rails\" if (ENV[\"CI\"] || ENV[\"COVERAGE\"])\n\n"
+end
 
 # Retrieve all gems and set up git
 after_bundle do

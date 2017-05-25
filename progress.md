@@ -7,13 +7,11 @@ Install Gems
 ---
 - capybara
 - selenium-webdriver # ? TODO: replace with chrome-headless
-- simplecov
 
 Configuration
 ---
 capybara config
 circle config
-simplecov config
 
 Post-install instructions
 access token for pronto on circle ci
@@ -41,6 +39,7 @@ Gems
 - pronto-brakeman
 - pronto-rubocop
 - pronto-scss
+- simplecov
 
 Configuration
 ---
@@ -65,3 +64,4 @@ scss-lint config
 pronto config - script
 brakeman config
 pronto script
+simplecov config
