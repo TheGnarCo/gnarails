@@ -5,11 +5,11 @@ def source_paths
     [File.expand_path(File.dirname(__FILE__))]
 end
 
-# gem 'pg'
+gem 'pg'
 
 gem_group :development, :test do
   # gem 'bullet'
-  # gem 'bundler-audit'
+  gem 'bundler-audit'
   # gem 'capybara'
   # gem 'database_cleaner'
   # gem 'dotenv-rails'
@@ -42,7 +42,6 @@ remove_file ".gitignore"
 copy_file "templates/.gitignore", ".gitignore"
 
 # Retrieve all gems and set up git
-run "bundle exec bundle install"
 after_bundle do
   remove_dir "test"
   git :init
