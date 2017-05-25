@@ -29,10 +29,10 @@ gem_group :development, :test do
 end
 
 # Remove sqlite gem, if present
-gsub_file "Gemfile", "gem 'sqlite'", ""
+gsub_file "Gemfile", /.*sqlite.*\n/, ""
 
 # Use scss
-run "mv app/assets/stylesheets/application.css app/assets/stylesheets/applicant.scss"
+run "mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss"
 
 # Set ruby version
 copy_file "templates/.ruby-version", ".ruby-version"
