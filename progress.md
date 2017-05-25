@@ -13,9 +13,6 @@ Install Gems
 - pronto-brakeman
 - pronto-rubocop
 - pronto-scss
-- pry-rails
-- rspec-its
-- rspec-rails
 - rubocop
 - scss_lint
 - selenium-webdriver # ? TODO: replace with chrome-headless
@@ -24,8 +21,6 @@ Install Gems
 
 Configuration
 ---
-.rspec file
-rspec config
 shoulda config
 factory girl config
 capybara config
@@ -48,7 +43,12 @@ Gems
 - pg
 - bundler-audit
 - dotenv-rails
+- pry-rails
+- rspec-its
+- rspec-rails
 
+Configuration
+---
 run bundle install?
 Git init
 gitignore
@@ -59,3 +59,5 @@ ruby-version
 change application.css to .scss
 Postgres/DB config
 dotenv config
+.rspec file
+rspec config
