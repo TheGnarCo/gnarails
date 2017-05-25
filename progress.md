@@ -10,7 +10,6 @@ Install Gems
 - pronto-brakeman
 - pronto-rubocop
 - pronto-scss
-- scss_lint
 - selenium-webdriver # ? TODO: replace with chrome-headless
 - simplecov
 
@@ -18,9 +17,10 @@ Configuration
 ---
 capybara config
 circle config
-scss-lint config
 simplecov config
-pronto config - script and config
+brakeman config
+pronto config - script
+pronto script
 
 Post-install instructions
 access token for pronto on circle ci
@@ -43,6 +43,7 @@ Gems
 - bullet
 - database_cleaner
 - rubocop
+- scss_lint
 
 Configuration
 ---
@@ -63,3 +64,4 @@ shoulda config
 bullet config
 database cleaner config
 rubocop config
+scss-lint config

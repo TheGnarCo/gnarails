@@ -22,7 +22,7 @@ gem_group :development, :test do
   gem 'rspec-its'
   gem 'rspec-rails'
   gem 'rubocop', require: false
-  # gem 'scss_lint', require: false
+  gem 'scss_lint', require: false
   # gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   # gem 'simplecov', require: false
@@ -86,6 +86,9 @@ gsub_file "spec/rails_helper.rb",
 
 # Rubocop
 copy_file "templates/.rubocop.yml", ".rubocop.yml"
+
+# SCSS Lint
+copy_file "templates/.scss-lint.yml", ".scss-lint.yml"
 
 # Retrieve all gems and set up git
 after_bundle do
