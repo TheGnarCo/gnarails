@@ -107,6 +107,9 @@ prepend_to_file "spec/spec_helper.rb" do
     "SimpleCov.start \"rails\" if (ENV[\"CI\"] || ENV[\"COVERAGE\"])\n\n"
 end
 
+# Circle CI
+copy_file "templates/circle.yml", "circle.yml"
+
 # Retrieve all gems and set up git
 after_bundle do
   remove_dir "test"

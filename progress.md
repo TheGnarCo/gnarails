@@ -11,14 +11,12 @@ Install Gems
 Configuration
 ---
 capybara config
-circle config
 
 Post-install instructions
 access token for pronto on circle ci
 
 docker file
 status/health endpoint?
-
 
 ## Done
 Gems
@@ -65,3 +63,4 @@ pronto config - script
 brakeman config
 pronto script
 simplecov config
+circle config
