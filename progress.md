@@ -10,7 +10,6 @@ Install Gems
 - pronto-brakeman
 - pronto-rubocop
 - pronto-scss
-- rubocop
 - scss_lint
 - selenium-webdriver # ? TODO: replace with chrome-headless
 - simplecov
@@ -19,7 +18,6 @@ Configuration
 ---
 capybara config
 circle config
-rubocop config
 scss-lint config
 simplecov config
 pronto config - script and config
@@ -44,6 +42,7 @@ Gems
 - shoulda-matchers
 - bullet
 - database_cleaner
+- rubocop
 
 Configuration
 ---
@@ -63,3 +62,4 @@ factory girl config
 shoulda config
 bullet config
 database cleaner config
+rubocop config

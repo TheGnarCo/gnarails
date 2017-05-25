@@ -21,7 +21,7 @@ gem_group :development, :test do
   gem 'pry-rails'
   gem 'rspec-its'
   gem 'rspec-rails'
-  # gem 'rubocop', require: false
+  gem 'rubocop', require: false
   # gem 'scss_lint', require: false
   # gem 'selenium-webdriver'
   gem 'shoulda-matchers'
@@ -83,6 +83,9 @@ end
 gsub_file "spec/rails_helper.rb",
           "config.use_transactional_fixtures = true",
           "config.use_transactional_fixtures = false"
+
+# Rubocop
+copy_file "templates/.rubocop.yml", ".rubocop.yml"
 
 # Retrieve all gems and set up git
 after_bundle do
