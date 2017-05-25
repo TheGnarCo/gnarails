@@ -6,7 +6,6 @@ bash script or alias which will run template? system command in ruby script?
 Install Gems
 ---
 - capybara
-- database_cleaner
 - pronto
 - pronto-brakeman
 - pronto-rubocop
@@ -19,7 +18,6 @@ Install Gems
 Configuration
 ---
 capybara config
-database cleaner config
 circle config
 rubocop config
 scss-lint config
@@ -45,6 +43,7 @@ Gems
 - factory_girl_rails
 - shoulda-matchers
 - bullet
+- database_cleaner
 
 Configuration
 ---
@@ -63,3 +62,4 @@ rspec config
 factory girl config
 shoulda config
 bullet config
+database cleaner config

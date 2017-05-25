@@ -11,7 +11,7 @@ gem_group :development, :test do
   gem 'bullet'
   gem 'bundler-audit'
   # gem 'capybara'
-  # gem 'database_cleaner'
+  gem 'database_cleaner'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
   # gem 'pronto'
@@ -74,6 +74,15 @@ end
 insert_into_file "spec/rails_helper.rb", after: "RSpec.configure do |config|" do
   "\n  if Bullet.enable?\n    config.before(:each) do\n      Bullet.start_request\n    end\n\n    config.after(:each) do\n      Bullet.perform_out_of_channel_notifications if Bullet.notification?\n      Bullet.end_request\n    end\n  end\n"
 end
+
+# Database Cleaner
+insert_into_file "spec/rails_helper.rb", after: "RSpec.configure do |config|\n" do
+  "  config.before(:suite) do\n    DatabaseCleaner.clean_with(:truncation)\n  end\n\n  config.before(:each) do\n    DatabaseCleaner.strategy = :transaction\n  end\n\n  config.before(:each, :js => true) do\n    DatabaseCleaner.strategy = :truncation\n  end\n\n  config.before(:each) do\n    DatabaseCleaner.start\n  end\n\n  config.after(:each) do\n    DatabaseCleaner.clean\n  end\n\n"
+end
+
+gsub_file "spec/rails_helper.rb",
+          "config.use_transactional_fixtures = true",
+          "config.use_transactional_fixtures = false"
 
 # Retrieve all gems and set up git
 after_bundle do
