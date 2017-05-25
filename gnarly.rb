@@ -94,6 +94,9 @@ copy_file "templates/.scss-lint.yml", ".scss-lint.yml"
 copy_file "templates/.pronto.yml", ".pronto.yml"
 copy_file "templates/script/ci_pronto", "script/ci_pronto"
 
+# Brakeman CI script
+copy_file "templates/script/brakeman", "script/brakeman"
+
 # Retrieve all gems and set up git
 after_bundle do
   remove_dir "test"

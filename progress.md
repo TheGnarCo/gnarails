@@ -14,8 +14,6 @@ Configuration
 capybara config
 circle config
 simplecov config
-brakeman config
-pronto script
 
 Post-install instructions
 access token for pronto on circle ci
@@ -65,3 +63,5 @@ database cleaner config
 rubocop config
 scss-lint config
 pronto config - script
+brakeman config
+pronto script
