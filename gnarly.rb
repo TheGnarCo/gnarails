@@ -12,7 +12,7 @@ gem_group :development, :test do
   gem 'bundler-audit'
   # gem 'capybara'
   # gem 'database_cleaner'
-  # gem 'dotenv-rails'
+  gem 'dotenv-rails'
   # gem 'factory_girl_rails'
   # gem 'pronto'
   # gem 'pronto-brakeman', require: false
@@ -32,6 +32,12 @@ end
 remove_file "config/database.yml"
 copy_file "templates/database.yml", "config/database.yml"
 gsub_file "config/database.yml", "__application_name__", "#{app_name}"
+
+# Configure dotenv files
+copy_file "templates/.env.development", ".env.development"
+copy_file "templates/.env.test", ".env.test"
+gsub_file ".env.development", "__application_name__", "#{app_name}"
+gsub_file ".env.test", "__application_name__", "#{app_name}"
 
 # Remove sqlite gem, if present
 gsub_file "Gemfile", /.*sqlite.*\n/, ""
