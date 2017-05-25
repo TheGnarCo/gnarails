@@ -8,7 +8,7 @@ end
 gem 'pg'
 
 gem_group :development, :test do
-  # gem 'bullet'
+  gem 'bullet'
   gem 'bundler-audit'
   # gem 'capybara'
   # gem 'database_cleaner'
@@ -24,7 +24,7 @@ gem_group :development, :test do
   # gem 'rubocop', require: false
   # gem 'scss_lint', require: false
   # gem 'selenium-webdriver'
-  # gem 'shoulda-matchers'
+  gem 'shoulda-matchers'
   # gem 'simplecov', require: false
 end
 
@@ -60,6 +60,20 @@ copy_file "templates/.rspec", ".rspec"
 
 # FactoryGirl
 copy_file "templates/spec/support/factory_girl.rb", "spec/support/factory_girl.rb"
+
+# Shoulda Matchers
+append_to_file "spec/rails_helper.rb" do
+  "\nShoulda::Matchers.configure do |config|\n  config.integrate do |with|\n    with.test_framework :rspec\n    with.library :rails\n  end\nend"
+end
+
+# Bullet
+insert_into_file "config/environments/test.rb", after: "Rails.application.configure do" do
+  "\n  # Bullet gem initialization\n  config.after_initialize do\n    Bullet.enable = true\n    Bullet.bullet_logger = true\n    Bullet.raise = true\n  end\n"
+end
+
+insert_into_file "spec/rails_helper.rb", after: "RSpec.configure do |config|" do
+  "\n  if Bullet.enable?\n    config.before(:each) do\n      Bullet.start_request\n    end\n\n    config.after(:each) do\n      Bullet.perform_out_of_channel_notifications if Bullet.notification?\n      Bullet.end_request\n    end\n  end\n"
+end
 
 # Retrieve all gems and set up git
 after_bundle do

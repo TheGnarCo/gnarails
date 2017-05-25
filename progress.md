@@ -5,7 +5,6 @@ bash script or alias which will run template? system command in ruby script?
 
 Install Gems
 ---
-- bullet
 - capybara
 - database_cleaner
 - pronto
@@ -15,12 +14,10 @@ Install Gems
 - rubocop
 - scss_lint
 - selenium-webdriver # ? TODO: replace with chrome-headless
-- shoulda-matchers
 - simplecov
 
 Configuration
 ---
-shoulda config
 capybara config
 database cleaner config
 circle config
@@ -28,7 +25,6 @@ rubocop config
 scss-lint config
 simplecov config
 pronto config - script and config
-bullet config
 
 Post-install instructions
 access token for pronto on circle ci
@@ -47,6 +43,8 @@ Gems
 - rspec-its
 - rspec-rails
 - factory_girl_rails
+- shoulda-matchers
+- bullet
 
 Configuration
 ---
@@ -63,3 +61,5 @@ dotenv config
 .rspec file
 rspec config
 factory girl config
+shoulda config
+bullet config
