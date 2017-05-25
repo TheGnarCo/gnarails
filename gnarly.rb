@@ -10,7 +10,7 @@ gem 'pg'
 gem_group :development, :test do
   gem 'bullet'
   gem 'bundler-audit'
-  # gem 'capybara'
+  gem 'capybara'
   gem 'database_cleaner'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
@@ -23,7 +23,7 @@ gem_group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'scss_lint', require: false
-  # gem 'selenium-webdriver'
+  gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
 end
@@ -109,6 +109,19 @@ end
 
 # Circle CI
 copy_file "templates/circle.yml", "circle.yml"
+
+# Capybara
+insert_into_file "spec/rails_helper.rb", after: "# Add additional requires below this line. Rails is not loaded until this point!\n" do
+  "require \"capybara/rails\""
+end
+
+append_to_file "spec/rails_helper.rb" do
+  "\n\nCapybara.register_driver :chrome do |app|\n"\
+    "  Capybara::Selenium::Driver.new(app, browser: :chrome)\n"\
+    "end\n\n"\
+    "Capybara.javascript_driver = :chrome\n"\
+    "Capybara.default_max_wait_time = 3\n"
+end
 
 # Retrieve all gems and set up git
 after_bundle do
