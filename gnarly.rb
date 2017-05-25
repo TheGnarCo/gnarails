@@ -14,10 +14,10 @@ gem_group :development, :test do
   gem 'database_cleaner'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
-  # gem 'pronto'
-  # gem 'pronto-brakeman', require: false
-  # gem 'pronto-rubocop', require: false
-  # gem 'pronto-scss', require: false
+  gem 'pronto'
+  gem 'pronto-brakeman', require: false
+  gem 'pronto-rubocop', require: false
+  gem 'pronto-scss', require: false
   gem 'pry-rails'
   gem 'rspec-its'
   gem 'rspec-rails'
@@ -89,6 +89,10 @@ copy_file "templates/.rubocop.yml", ".rubocop.yml"
 
 # SCSS Lint
 copy_file "templates/.scss-lint.yml", ".scss-lint.yml"
+
+# Pronto
+copy_file "templates/.pronto.yml", ".pronto.yml"
+copy_file "templates/script/ci_pronto", "script/ci_pronto"
 
 # Retrieve all gems and set up git
 after_bundle do

@@ -6,10 +6,6 @@ bash script or alias which will run template? system command in ruby script?
 Install Gems
 ---
 - capybara
-- pronto
-- pronto-brakeman
-- pronto-rubocop
-- pronto-scss
 - selenium-webdriver # ? TODO: replace with chrome-headless
 - simplecov
 
@@ -19,7 +15,6 @@ capybara config
 circle config
 simplecov config
 brakeman config
-pronto config - script
 pronto script
 
 Post-install instructions
@@ -44,6 +39,10 @@ Gems
 - database_cleaner
 - rubocop
 - scss_lint
+- pronto
+- pronto-brakeman
+- pronto-rubocop
+- pronto-scss
 
 Configuration
 ---
@@ -65,3 +64,4 @@ bullet config
 database cleaner config
 rubocop config
 scss-lint config
+pronto config - script
