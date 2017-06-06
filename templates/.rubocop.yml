@@ -26,10 +26,10 @@ Style/SymbolArray:
 Style/ParenthesesAroundCondition:
   Enabled: false
 
-Style/MultilineMethodCallIndentation:
+Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
-Style/AlignParameters:
+Layout/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 
 Metrics/BlockLength:
