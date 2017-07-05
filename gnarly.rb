@@ -119,14 +119,23 @@ copy_file "templates/circle.yml", "circle.yml"
 # Capybara
 insert_into_file "spec/rails_helper.rb", after: "# Add additional requires below this line. Rails is not loaded until this point!\n" do
   "require \"capybara/rails\"\n"\
-    "require \"axe/rspec\"\n"
+    "require \"axe/rspec\"\n"\
+    "require \"selenium/webdriver\"\n"
 end
 
 append_to_file "spec/rails_helper.rb" do
   "\n\nCapybara.register_driver :chrome do |app|\n"\
     "  Capybara::Selenium::Driver.new(app, browser: :chrome)\n"\
     "end\n\n"\
-    "Capybara.javascript_driver = :chrome\n"\
+    "Capybara.register_driver :headless_chrome do |app|\n"\
+    "  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(\n"\
+    "    chromeOptions: { args: %w[headless disable-gpu] }\n"\
+    "  )\n\n"\
+    "  Capybara::Selenium::Driver.new app,\n"\
+    "    browser: :chrome,\n"\
+    "    desired_capabilities: capabilities\n"\
+    "end\n\n"\
+    "Capybara.javascript_driver = :headless_chrome\n"\
     "Capybara.default_max_wait_time = 3\n"
 end
 
@@ -148,5 +157,7 @@ after_bundle do
 
   puts "\n\nNEXT STEPS"
   puts "=========="
-  puts "Follow the post-install instructions to set up circle to allow gnarbot to comment on PRs. https://github.com/TheGnarCo/gnarails#post-install"
+  puts "* Install Google Chrome for acceptance tests"
+  puts "* Install ChromeDriver for default headless acceptance tests: brew install chromedriver"
+  puts "* Follow the post-install instructions to set up circle to allow gnarbot to comment on PRs. https://github.com/TheGnarCo/gnarails#post-install"
 end
