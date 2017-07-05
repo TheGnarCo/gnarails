@@ -8,6 +8,7 @@ end
 gem 'pg'
 
 gem_group :development, :test do
+  gem 'axe-matchers'
   gem 'bullet'
   gem 'bundler-audit'
   gem 'capybara'
@@ -117,7 +118,8 @@ copy_file "templates/circle.yml", "circle.yml"
 
 # Capybara
 insert_into_file "spec/rails_helper.rb", after: "# Add additional requires below this line. Rails is not loaded until this point!\n" do
-  "require \"capybara/rails\""
+  "require \"capybara/rails\"\n"\
+    "require \"axe/rspec\"\n"
 end
 
 append_to_file "spec/rails_helper.rb" do
