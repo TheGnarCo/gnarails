@@ -96,9 +96,11 @@ copy_file "templates/.scss-lint.yml", ".scss-lint.yml"
 # Pronto
 copy_file "templates/.pronto.yml", ".pronto.yml"
 copy_file "templates/script/ci_pronto", "script/ci_pronto"
+run "chmod +x script/ci_pronto"
 
 # Brakeman CI script
 copy_file "templates/script/brakeman", "script/brakeman"
+run "chmod +x script/brakeman"
 
 # Simplecov
 prepend_to_file "spec/spec_helper.rb" do
