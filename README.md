@@ -29,7 +29,7 @@ brew install cmake
   - Name the variable `PRONTO_GITHUB_ACCESS_TOKEN` with the value from the previous Personal Access Token.
 
 # Switching out Capybara Driver
-If you'd like to not run your tests headless, for example, to troubleshoot an issue and see what's on the screen, modify the `Capybara.javasscript_driver` in `spec/rails_helper.rb` to use `:chome` instead of `:headless_chrome`. After the change, this line should look as follows:
+If you'd like to not run your tests headless, for example, to troubleshoot an issue and see what's on the screen, modify the `Capybara.javascript_driver` in `spec/rails_helper.rb` to use `:chome` instead of `:headless_chrome`. After the change, this line should look as follows:
 
 ```
 Capybara.javascript_driver = :chrome
