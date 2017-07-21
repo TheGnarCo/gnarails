@@ -34,3 +34,15 @@ If you'd like to not run your tests headless, for example, to troubleshoot an is
 ```
 Capybara.javascript_driver = :chrome
 ```
+
+# Updating gnar-style
+
+Should the gnar-style gem ever update with new style configurations and you want to utilize them in your rails app, you must run the following command after upgrading the dependency with bundler:
+
+```bash
+$ bundle exec gnar-style copy_local --format=rails
+```
+
+This will pull the new files in from the gem into your local repository. The `.rubocop.yml` file is inheriting from these local files, rather than from the gem.
+
+This is due to the use of `pronto`. The gnar-style gem does provide an [easier mechanism](https://github.com/TheGnarCo/gnar-style#inheriting-from-the-gem) to have these styles pulled directly from the gem. However, this requires that rubocop be run with `bundle exec rubocop` so the `inherit_gem` directive in rubocop can determine where the gem is. Unfortunately, that does not appear to play nicely with the [pronto-rubocop](https://github.com/prontolabs/pronto-rubocop) runner, which this template uses.

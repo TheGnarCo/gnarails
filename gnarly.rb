@@ -15,6 +15,7 @@ gem_group :development, :test do
   gem 'database_cleaner'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
+  gem 'gnar-style', git: "https://github.com/TheGnarCo/gnar-style.git", require: false
   gem 'pronto'
   gem 'pronto-brakeman', require: false
   gem 'pronto-rubocop', require: false
@@ -22,7 +23,6 @@ gem_group :development, :test do
   gem 'pry-rails'
   gem 'rspec-its'
   gem 'rspec-rails'
-  gem 'rubocop', require: false
   gem 'scss_lint', require: false
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
@@ -89,6 +89,7 @@ gsub_file "spec/rails_helper.rb",
           "config.use_transactional_fixtures = false"
 
 # Rubocop
+run "bundle exec gnar-style copy_local --format=rails"
 copy_file "templates/.rubocop.yml", ".rubocop.yml"
 
 # SCSS Lint
