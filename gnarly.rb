@@ -129,7 +129,13 @@ append_to_file "spec/rails_helper.rb" do
     "end\n\n"\
     "Capybara.register_driver :headless_chrome do |app|\n"\
     "  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(\n"\
-    "    chromeOptions: { args: %w[headless disable-gpu] }\n"\
+    "    chromeOptions: { args: [\n"\
+    "      \"headless\",\n"\
+    "      \"disable-gpu\",\n"\
+    "      \"no-sandbox\",\n"\
+    "      \"disable-extensions\",\n"\
+    "      \"start-maximized\"\n"\
+    "    ] }\n"\
     "  )\n\n"\
     "  Capybara::Selenium::Driver.new app,\n"\
     "    browser: :chrome,\n"\
