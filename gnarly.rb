@@ -15,7 +15,7 @@ gem_group :development, :test do
   gem 'database_cleaner'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
-  gem 'gnar-style', git: "https://github.com/TheGnarCo/gnar-style.git", require: false
+  gem 'gnar-style', require: false
   gem 'pronto'
   gem 'pronto-brakeman', require: false
   gem 'pronto-rubocop', require: false
