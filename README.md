@@ -14,7 +14,30 @@ Error while installing pronto? Try installing cmake
 brew install cmake
 ```
 
+# Usage with React
+
+```sh
+$ git clone https://github.com/TheGnarCo/gnarails.git
+$ cd where/app/will/go
+$ rails new <APP_NAME> -m path/to/gnarly.rb --skip-test-unit --database=postgresql --webpack=react
+```
+
 # Post-Install
+
+```sh
+$ cd <APP_NAME>
+$ bin/bundle
+$ bin/rails db:create
+$ bin/rails db:migrate
+```
+
+_For React Apps_
+
+```sh
+$ bin/yarn
+$ bin/yarn test
+```
+
 * Generate a Personal Access Token from the gnarbot github account.
   - Settings > Personal access tokens > Generate new token.
   - Use the repo name for the token description.
@@ -38,3 +61,19 @@ Capybara.javascript_driver = :chrome
 # Updating gnar-style
 
 After updating the gnar-style gem, you must take care to ensure that your local rubocop file does not stray from the update made to the gem in an unintended manner. Any changes in the local rubocop file will take precedence over what is in the gnar-style gem. See the gnar-style [docs](https://github.com/TheGnarCo/gnar-style#overriding-styles) for more details.
+
+# Running the Application
+
+```sh
+$ bin/rails s
+```
+
+_For React Apps_
+
+In a separate terminal window/tab
+
+```sh
+$ bin/yarn start
+```
+
+Visit `localhost:3000` in your browser

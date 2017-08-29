@@ -5,6 +5,74 @@ def source_paths
     [File.expand_path(File.dirname(__FILE__))]
 end
 
+JS_DEPENDENCIES = [
+  "babel-preset-es2015",
+  "babel-preset-stage-0",
+  "classnames",
+  "es6-object-assign",
+  "es6-promise",
+  "history",
+  "lodash",
+  "react-entity-getter",
+  "react-redux",
+  "react-router",
+  "react-router-dom",
+  "react-router-redux@next",
+  "redux",
+  "redux-form",
+  "redux-thunk",
+  "schlepp"
+]
+
+JS_DEV_DEPENDENCIES = [
+  "babel-eslint",
+  "enzyme",
+  "eslint",
+  "eslint-config-airbnb",
+  "eslint-plugin-import",
+  "eslint-plugin-jsx-a11y@^5.1.1",
+  "eslint-plugin-react",
+  "expect",
+  "jsdom",
+  "mocha",
+  "nock",
+  "react-dom",
+  "react-test-renderer",
+  "redux-mock-store"
+]
+
+def add_js_files
+  directory "templates/react/js", "app/javascript"
+  directory "templates/react/views", "app/views"
+  copy_file "templates/react/layout.html.erb", "app/views/layouts/application.html.erb", force: true
+  copy_file "templates/react/rails_routes.rb", "config/routes.rb", force: true
+  copy_file "templates/react/controllers/home_controller.rb", "app/controllers/home_controller.rb"
+  copy_file "templates/react/.babelrc", ".babelrc", force: true
+  copy_file "templates/react/.eslintrc.js", ".eslintrc.js", force: true
+  gsub_file "app/views/layouts/application.html.erb",
+    "placeholder_application_title",
+    app_name.gsub("-", "_").titleize
+  gsub_file "app/javascript/constants/index.js", "  APP_NAME: 'CHANGE_ME',", "  APP_NAME: '#{app_name}',"
+  remove_file "app/javascript/packs/application.js"
+end
+
+def install_js_deps
+  puts "Installing Gnar react packages"
+  run "yarn add #{JS_DEPENDENCIES.join(' ')}"
+  run "yarn add --dev #{JS_DEV_DEPENDENCIES.join(' ')}"
+end
+
+def modify_npm_scripts
+  insert_into_file "package.json", before: "  \"dependencies\": {\n" do
+    "  \"scripts\": {\n"\
+      "    \"start\": \"./bin/webpack-dev-server\",\n"\
+      "    \"mocha\": \"NODE_PATH=./app/javascript mocha --compilers js:babel-register --require babel-polyfill --require app/javascript/test/.setup.js --recursive './app/javascript/**/*.tests.js*'\",\n"\
+      "    \"lint\": \"eslint app/javascript\",\n"\
+      "    \"test\": \"npm run lint && npm run mocha\"\n"\
+      "  },\n"
+  end
+end
+
 gem 'pg'
 
 gem_group :development, :test do
@@ -147,6 +215,12 @@ end
 
 # Retrieve all gems, set up git, display next steps
 after_bundle do
+  if options[:webpack] == "react"
+    install_js_deps
+    add_js_files
+    modify_npm_scripts
+  end
+
   remove_dir "test"
   git :init
   puts ""
