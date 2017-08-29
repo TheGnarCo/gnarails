@@ -5,6 +5,42 @@ def source_paths
     [File.expand_path(File.dirname(__FILE__))]
 end
 
+JS_DEPENDENCIES = [
+  "babel-preset-es2015",
+  "babel-preset-stage-0",
+  "classnames",
+  "history",
+  "lodash",
+  "react-entity-getter",
+  "react-redux",
+  "react-router",
+  "react-router-dom",
+  "react-router-redux",
+  "redux",
+  "redux-thunk"
+]
+
+JS_DEV_DEPENDENCIES = [
+  "babel-eslint",
+  "enzyme",
+  "eslint",
+  "eslint-config-airbnb",
+  "eslint-plugin-import",
+  "eslint-plugin-jsx-a11y@^5.1.1",
+  "eslint-plugin-react",
+  "expect",
+  "jsdom",
+  "mocha",
+  "nock",
+  "redux-mock-store"
+]
+
+def install_js_deps
+  puts "Installing Gnar react packages"
+  run "yarn add #{JS_DEPENDENCIES.join(' ')}"
+  run "yarn add --dev #{JS_DEV_DEPENDENCIES.join(' ')}"
+end
+
 gem 'pg'
 
 gem_group :development, :test do
@@ -128,6 +164,10 @@ end
 
 # Retrieve all gems, set up git, display next steps
 after_bundle do
+  if options[:webpack] == 'react'
+    install_js_deps
+  end
+
   remove_dir "test"
   git :init
   puts ""
