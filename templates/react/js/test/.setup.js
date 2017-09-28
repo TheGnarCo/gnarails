@@ -1,5 +1,9 @@
 var jsdom = require('jsdom').JSDOM;
 var exposedProperties = ['window', 'navigator', 'document'];
+var Enzyme = require('enzyme');
+var Adapter = require('enzyme-adapter-react-15');
+
+Enzyme.configure({ adapter: new Adapter() });
 
 jsdom = new jsdom('<!DOCTYPE html><html><body></body></html>');
 
