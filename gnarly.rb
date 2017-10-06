@@ -213,9 +213,24 @@ append_to_file "spec/rails_helper.rb" do
     "Capybara.default_max_wait_time = 3\n"
 end
 
+react = options[:webpack] == "react"
+
+# Docker
+copy_file "templates/Dockerfile", "Dockerfile"
+
+if react
+  copy_file "templates/Dockerfile-assets", "Dockerfile-assets"
+  copy_file "templates/.env.docker/.env.docker-webpack", ".env.docker"
+  copy_file "templates/.env.docker-assets", ".env.docker-assets"
+  copy_file "templates/docker-compose.yml/docker-compose-webpack.yml", "docker-compose.yml"
+else
+  copy_file "templates/.env.docker/.env.docker-standard", ".env.docker"
+  copy_file "templates/docker-compose.yml/docker-compose-standard.yml", "docker-compose.yml"
+end
+
 # Retrieve all gems, set up git, display next steps
 after_bundle do
-  if options[:webpack] == "react"
+  if react
     install_js_deps
     add_js_files
     modify_npm_scripts

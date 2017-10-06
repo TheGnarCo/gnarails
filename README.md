@@ -51,6 +51,30 @@ $ bin/yarn test
   - Add Variable.
   - Name the variable `PRONTO_GITHUB_ACCESS_TOKEN` with the value from the previous Personal Access Token.
 
+# Usage with Docker
+
+A `Dockerfile` and `docker-compose.yml` file are created by default. When run with `--webpack=react`,
+there are two `Dockerfile`s: one for the Rails server and one for the assets server.
+
+To use Docker, run:
+
+```sh
+docker-compose build
+```
+
+then set up the the database:
+
+```sh
+docker-compose run web rails db:create
+docker-compose run web rails db:migrate
+```
+
+finally, start the server and visit `localhost:3000`:
+
+```sh
+docker-compose up
+```
+
 # Switching out Capybara Driver
 If you'd like to not run your tests headless, for example, to troubleshoot an issue and see what's on the screen, modify the `Capybara.javascript_driver` in `spec/rails_helper.rb` to use `:chome` instead of `:headless_chrome`. After the change, this line should look as follows:
 

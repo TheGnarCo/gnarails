@@ -1,0 +1,26 @@
+version: '3'
+services:
+  db:
+    image: postgres
+  assets:
+    build:
+      context: .
+      dockerfile: Dockerfile-assets
+    command: yarn start
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .env.docker-assets
+  web:
+    build: .
+    command: bash -c 'rm -f tmp/pids/server.pid && bundle exec rails s --port 3000 --binding 0.0.0.0'
+    volumes:
+      - .:/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - assets
+    env_file:
+      - .env.docker
