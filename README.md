@@ -62,7 +62,7 @@ To use Docker, run:
 docker-compose build
 ```
 
-then set up the the database:
+then set up the database:
 
 ```sh
 docker-compose run web rails db:create
