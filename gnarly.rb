@@ -82,7 +82,7 @@ gem_group :development, :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'dotenv-rails'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'gnar-style', require: false
   gem 'pronto'
   gem 'pronto-brakeman', require: false
@@ -130,8 +130,8 @@ gsub_file "spec/rails_helper.rb",
   "# Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }",
   "Dir[Rails.root.join(\"spec/support/**/*.rb\")].each { |f| require f }"
 
-# FactoryGirl
-copy_file "templates/spec/support/factory_girl.rb", "spec/support/factory_girl.rb"
+# FactoryBot
+copy_file "templates/spec/support/factory_bot.rb", "spec/support/factory_bot.rb"
 
 # Shoulda Matchers
 append_to_file "spec/rails_helper.rb" do
