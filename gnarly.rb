@@ -80,7 +80,6 @@ gem_group :development, :test do
   gem 'bullet'
   gem 'bundler-audit'
   gem 'capybara'
-  gem 'database_cleaner'
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'gnar-style', require: false
@@ -133,6 +132,9 @@ gsub_file "spec/rails_helper.rb",
 # FactoryBot
 copy_file "templates/spec/support/factory_bot.rb", "spec/support/factory_bot.rb"
 
+# System Tests
+copy_file "templates/spec/support/system_test_configuration.rb", "spec/support/system_test_configuration.rb"
+
 # Shoulda Matchers
 append_to_file "spec/rails_helper.rb" do
   "\nShoulda::Matchers.configure do |config|\n  config.integrate do |with|\n    with.test_framework :rspec\n    with.library :rails\n  end\nend"
@@ -146,15 +148,6 @@ end
 insert_into_file "spec/rails_helper.rb", after: "RSpec.configure do |config|" do
   "\n  if Bullet.enable?\n    config.before(:each) do\n      Bullet.start_request\n    end\n\n    config.after(:each) do\n      Bullet.perform_out_of_channel_notifications if Bullet.notification?\n      Bullet.end_request\n    end\n  end\n"
 end
-
-# Database Cleaner
-insert_into_file "spec/rails_helper.rb", after: "RSpec.configure do |config|\n" do
-  "  config.before(:suite) do\n    DatabaseCleaner.clean_with(:truncation)\n  end\n\n  config.before(:each) do\n    DatabaseCleaner.strategy = :transaction\n  end\n\n  config.before(:each, :js => true) do\n    DatabaseCleaner.strategy = :truncation\n  end\n\n  config.before(:each) do\n    DatabaseCleaner.start\n  end\n\n  config.after(:each) do\n    DatabaseCleaner.clean\n  end\n\n"
-end
-
-gsub_file "spec/rails_helper.rb",
-          "config.use_transactional_fixtures = true",
-          "config.use_transactional_fixtures = false"
 
 # Rubocop
 copy_file "templates/.rubocop.yml", ".rubocop.yml"
@@ -192,25 +185,7 @@ insert_into_file "spec/rails_helper.rb", after: "# Add additional requires below
 end
 
 append_to_file "spec/rails_helper.rb" do
-  "\n\nCapybara.register_driver :chrome do |app|\n"\
-    "  Capybara::Selenium::Driver.new(app, browser: :chrome)\n"\
-    "end\n\n"\
-    "Capybara.register_driver :headless_chrome do |app|\n"\
-    "  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(\n"\
-    "    chromeOptions: { args: [\n"\
-    "      \"headless\",\n"\
-    "      \"disable-gpu\",\n"\
-    "      \"no-sandbox\",\n"\
-    "      \"disable-extensions\",\n"\
-    "      \"start-maximized\"\n"\
-    "    ] }\n"\
-    "  )\n\n"\
-    "  Capybara::Selenium::Driver.new app,\n"\
-    "    browser: :chrome,\n"\
-    "    desired_capabilities: capabilities\n"\
-    "end\n\n"\
-    "Capybara.javascript_driver = :headless_chrome\n"\
-    "Capybara.default_max_wait_time = 3\n"
+  "\n\nCapybara.default_max_wait_time = 3\n"
 end
 
 react = options[:webpack] == "react"

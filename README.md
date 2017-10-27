@@ -76,10 +76,12 @@ docker-compose up
 ```
 
 # Switching out Capybara Driver
-If you'd like to not run your tests headless, for example, to troubleshoot an issue and see what's on the screen, modify the `Capybara.javascript_driver` in `spec/rails_helper.rb` to use `:chome` instead of `:headless_chrome`. After the change, this line should look as follows:
+If you'd like to not run your tests headless, for example, to troubleshoot an issue and see what's on the screen, modify the `driven_by` driver in `spec/support/system_test_configuration.rb` to use `:selenium_chrome` instead of `:selenium_chrome_headless`. After the change, this block should look as follows:
 
-```
-Capybara.javascript_driver = :chrome
+```ruby
+config.before(:each, type: :system, js: true) do
+  driven_by :selenium_chrome
+end
 ```
 
 # Updating gnar-style
