@@ -39,7 +39,7 @@ $ bin/yarn test
 ```
 
 * Generate a Personal Access Token from the gnarbot github account.
-  - Settings > Personal access tokens > Generate new token.
+  - Settings > Developer settings > Personal access tokens > Generate new token.
   - Use the repo name for the token description.
   - Provide the repo scope.
   - Generate token.
