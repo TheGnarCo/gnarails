@@ -175,7 +175,8 @@ prepend_to_file "spec/spec_helper.rb" do
 end
 
 # Circle CI
-copy_file "templates/circle.yml", "circle.yml"
+copy_file "templates/.circleci/config.yml", ".circleci/config.yml"
+gsub_file ".circleci/config.yml", "__application_name__", "#{app_name}"
 
 # Capybara
 insert_into_file "spec/rails_helper.rb", after: "# Add additional requires below this line. Rails is not loaded until this point!\n" do
