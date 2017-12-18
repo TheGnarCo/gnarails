@@ -1,7 +1,6 @@
 require "bundler/setup"
 require "gnarails"
 require "rspec/expectations"
-# require_relative "../gnarly"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
