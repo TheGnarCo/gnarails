@@ -32,8 +32,8 @@ jobs:
 
       # Set up dummy application for test suite assertions
       - run:
-        name: Create dummy application
-        command: ./bin/test-setup.sh
+          name: Create dummy application
+          command: ./bin/test-setup.sh
 
       # Tests
       - run:
