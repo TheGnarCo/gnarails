@@ -105,6 +105,21 @@ $ bin/yarn start
 
 Visit `localhost:3000` in your browser
 
+# Development
+
+## Running the test suite
+It's required to generate a dummy application prior to running the test suite
+for the gem. The following script will create this application and run the test
+suite after:
+```
+./bin/test-run.sh
+```
+
+Note that the test suite will fail to start if the application is not created
+and the test suite will remove the dummy application at the conclusion of the
+test run. This ensures that the dummy application be refreshed after every test
+run.
+
 ## About The Gnar Company
 
 ![The Gnar Company](https://avatars0.githubusercontent.com/u/17011419?s=100&v=4)

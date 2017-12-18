@@ -15,17 +15,9 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    puts "before suite"
-    # changed_dir=Dir.pwd
-    # puts "you're now in directory #{changed_dir}"
-    # `rails new rails-test-app -m gnarly.rb --skip-test-unit --database=postgresql`
-    # exec "rails new rails-test-app -m gnarly.rb --skip-test-unit --database=postgresql"
-    # exec "./bin/test-setup.sh"
-    # `./bin/test-setup.sh`
-    # %x(./bin/test-setup.sh)
-    # system "bash", "./bin/test-setup.sh"
-    # system "rails new rails-test-app -m #{Gnarails.template_file} --skip-test-unit --database=postgresql"
-    # exec "rails new rails-test-app -m #{Gnarails.template_file} --skip-test-unit --database=postgresql"
+    unless File.directory?("rails-test-app")
+      raise "Setup test app by running `./bin/test-setup.sh` before running suite"
+    end
   end
 
   config.after(:suite) do
