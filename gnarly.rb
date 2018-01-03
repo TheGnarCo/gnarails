@@ -150,6 +150,15 @@ insert_into_file "spec/rails_helper.rb", after: "RSpec.configure do |config|" do
   "\n  if Bullet.enable?\n    config.before(:each) do\n      Bullet.start_request\n    end\n\n    config.after(:each) do\n      Bullet.perform_out_of_channel_notifications if Bullet.notification?\n      Bullet.end_request\n    end\n  end\n"
 end
 
+# Limit Test Logging
+insert_into_file "config/environments/test.rb", after: "Rails.application.configure do" do
+  "\n"\
+    "  unless ENV[\"RAILS_ENABLE_TEST_LOG\"]\n"\
+    "    config.logger = Logger.new(nil)\n"\
+    "    config.log_level = :fatal\n"\
+    "  end\n"
+end
+
 # Rubocop
 copy_file "templates/.rubocop.yml", ".rubocop.yml"
 
