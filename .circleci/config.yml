@@ -1,0 +1,36 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.4.2-stretch-node-browsers
+        environment:
+          RAILS_ENV: test
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - gnarails-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - gnarails-
+
+      # Bundle install dependencies
+      - run:
+          name: install dependencies
+          command: bundle install --path vendor/bundle
+
+      # Store bundle cache
+      - save_cache:
+          paths:
+            - vendor/bundle
+          key: gnarails-{{ checksum "Gemfile.lock" }}
+
+      # Tests
+      - run:
+          name: RSpec
+          command: bundle exec rspec
