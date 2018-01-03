@@ -83,6 +83,7 @@ gem_group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'gnar-style', require: false
+  gem 'lol_dba'
   gem 'pronto'
   gem 'pronto-brakeman', require: false
   gem 'pronto-rubocop', require: false
