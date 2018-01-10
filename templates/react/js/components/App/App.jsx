@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
-export default class App extends Component {
+class App extends Component {
   render () {
     const { children } = this.props;
     return (
@@ -10,3 +11,5 @@ export default class App extends Component {
     );
   }
 };
+
+export default withRouter(App);
