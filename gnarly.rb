@@ -111,6 +111,11 @@ gsub_file ".env.test", "__application_name__", "#{app_name}"
 # Remove sqlite gem, if present
 gsub_file "Gemfile", /.*sqlite.*\n/, ""
 
+# Add ruby version to Gemfile
+insert_into_file "Gemfile", after: "source 'https://rubygems.org'" do
+  "\nruby \"2.4.2\""
+end
+
 # Use scss
 run "mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss"
 
