@@ -83,6 +83,7 @@ gem_group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'gnar-style', require: false
+  gem 'lol_dba'
   gem 'pronto'
   gem 'pronto-brakeman', require: false
   gem 'pronto-rubocop', require: false
@@ -109,6 +110,11 @@ gsub_file ".env.test", "__application_name__", "#{app_name}"
 
 # Remove sqlite gem, if present
 gsub_file "Gemfile", /.*sqlite.*\n/, ""
+
+# Add ruby version to Gemfile
+insert_into_file "Gemfile", after: "source 'https://rubygems.org'" do
+  "\nruby \"2.4.2\""
+end
 
 # Use scss
 run "mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss"
@@ -147,6 +153,15 @@ end
 
 insert_into_file "spec/rails_helper.rb", after: "RSpec.configure do |config|" do
   "\n  if Bullet.enable?\n    config.before(:each) do\n      Bullet.start_request\n    end\n\n    config.after(:each) do\n      Bullet.perform_out_of_channel_notifications if Bullet.notification?\n      Bullet.end_request\n    end\n  end\n"
+end
+
+# Limit Test Logging
+insert_into_file "config/environments/test.rb", after: "Rails.application.configure do" do
+  "\n"\
+    "  unless ENV[\"RAILS_ENABLE_TEST_LOG\"]\n"\
+    "    config.logger = Logger.new(nil)\n"\
+    "    config.log_level = :fatal\n"\
+    "  end\n"
 end
 
 # Rubocop
