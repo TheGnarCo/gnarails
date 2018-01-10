@@ -1,6 +1,6 @@
 import Schlepp from 'schlepp';
 
-import constants from 'constants';
+import appConstants from 'app_constants';
 import sessionMethods from 'api/sessions';
 
 class Api extends Schlepp {
@@ -12,6 +12,6 @@ class Api extends Schlepp {
 }
 
 export default new Api({
-  host: constants.API_HOST,
-  bearerTokenKeyInLocalStorage: `${constants.APP_NAME}:auth_token`,
+  host: appConstants.API_HOST,
+  bearerTokenKeyInLocalStorage: `${appConstants.APP_NAME}:auth_token`,
 });

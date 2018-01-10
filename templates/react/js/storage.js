@@ -1,6 +1,6 @@
-import constants from 'constants';
+import appConstants from 'app_constants';
 
-const prefix = constants.APP_NAME;
+const prefix = appConstants.APP_NAME;
 
 export default {
   getItem: (key) => {

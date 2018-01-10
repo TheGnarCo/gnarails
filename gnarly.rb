@@ -52,7 +52,7 @@ def add_js_files
   gsub_file "app/views/layouts/application.html.erb",
     "placeholder_application_title",
     app_name.gsub("-", "_").titleize
-  gsub_file "app/javascript/constants/index.js", "  APP_NAME: 'CHANGE_ME',", "  APP_NAME: '#{app_name}',"
+  gsub_file "app/javascript/app_constants/index.js", "  APP_NAME: 'CHANGE_ME',", "  APP_NAME: '#{app_name}',"
   remove_file "app/javascript/packs/application.js"
 end
 
