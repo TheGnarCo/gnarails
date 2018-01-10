@@ -27,6 +27,7 @@ JS_DEPENDENCIES = [
 JS_DEV_DEPENDENCIES = [
   "babel-eslint",
   "enzyme",
+  "enzyme-adapter-react-16",
   "eslint",
   "eslint-config-airbnb",
   "eslint-plugin-import",
