@@ -1,6 +1,14 @@
 import nock from 'nock';
 
-const createRequestMock = ({ bearerToken, host, method, params, path, responseStatus = 200, response }) => {
+const createRequestMock = ({
+  bearerToken,
+  host,
+  method,
+  params,
+  path,
+  responseStatus = 200,
+  response,
+}) => {
   const reqheaders = { Authorization: `Bearer ${bearerToken}` };
   const req = bearerToken ? nock(host, { reqheaders }) : nock(host);
 
