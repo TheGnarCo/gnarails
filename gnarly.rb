@@ -74,7 +74,7 @@ def modify_npm_scripts
   end
 end
 
-gem 'pg'
+gem 'pg', '~> 0.18'
 
 gem_group :development, :test do
   gem 'axe-matchers'
