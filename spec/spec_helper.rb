@@ -19,7 +19,7 @@ RSpec.configure do |config|
     end
   end
 
-  config.after(:suite) do
-    `rm -R rails-test-app`
-  end
+  # config.after(:suite) do
+  #   `rm -R rails-test-app`
+  # end
 end
