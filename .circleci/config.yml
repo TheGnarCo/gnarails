@@ -30,6 +30,11 @@ jobs:
             - vendor/bundle
           key: gnarails-{{ checksum "Gemfile.lock" }}
 
+      # Install rails
+      - run:
+          name: Install rails
+          command: gem install rails
+
       # Set up dummy application for test suite assertions
       - run:
           name: Create dummy application
