@@ -35,11 +35,6 @@ jobs:
           name: Install rails
           command: gem install rails
 
-      # Set up dummy application for test suite assertions
-      # - run:
-      #     name: Create dummy application
-      #     command: ./bin/test-setup.sh
-
       # Tests
       - run:
           name: RSpec
