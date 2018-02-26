@@ -18,8 +18,8 @@ RSpec.configure do |config|
       # TODO: add rails as a dependency
       # TODO: use Bundler.with_clean_env?
       # TODO: actually run setup script, not just raise
-      # `sh ./bin/test-setup.sh`
-      raise "Setup test app by running `./bin/test-setup.sh` before running suite"
+      `sh ./bin/test-setup.sh`
+      # raise "Setup test app by running `./bin/test-setup.sh` before running suite"
     end
   end
 
