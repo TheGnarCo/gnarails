@@ -1,4 +1,5 @@
 #!/bin/bash
+ruby -v
 echo "Running test setup"
 rails new rails-test-app -m gnarly.rb --skip-test-unit --database=postgresql
 
