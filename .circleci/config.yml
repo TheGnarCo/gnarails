@@ -30,11 +30,6 @@ jobs:
             - vendor/bundle
           key: gnarails-{{ checksum "Gemfile.lock" }}
 
-      # Install rails
-      - run:
-          name: Install rails
-          command: gem install rails
-
       # Tests
       - run:
           name: RSpec
