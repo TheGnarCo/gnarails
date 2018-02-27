@@ -21,6 +21,7 @@ cp test-app/spec/system/viewing_all_job_postings_spec.rb rails-test-app/spec/sys
 
 echo "Setting up sample application"
 cd rails-test-app
+bundle
 bundle exec rake db:drop
 bundle exec rake db:setup
 bundle exec rails db:migrate
