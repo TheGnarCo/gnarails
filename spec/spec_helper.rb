@@ -17,7 +17,8 @@ RSpec.configure do |config|
     unless File.directory?("rails-test-app")
       puts "Creating test app from gnarails"
       Bundler.with_clean_env do
-        `sh ./bin/test-setup.sh`
+        output = `sh ./bin/test-setup.sh`
+        puts output
       end
       puts "Created test app from gnarails"
     end
