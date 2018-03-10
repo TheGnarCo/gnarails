@@ -13,6 +13,12 @@ RSpec.describe Gnarails do
   end
 
   it "runs test-app suite" do
+    # Have different setup if CI
+    # docker-compose build
+    # docker-compose run web bundle exec rake db:create RAILS_ENV=test
+    # docker-compose run web bundle exec rake db:migrate RAILS_ENV=test
+    # docker-compose run web bundle exec rspec
+    #
     Bundler.with_clean_env do
       Dir.chdir('rails-test-app') do
         `bundle exec rspec`
