@@ -14,17 +14,13 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    unless File.directory?("rails-test-app")
-      puts "Creating test app from gnarails"
-      Bundler.with_clean_env do
-        output = `sh ./bin/test-setup.sh`
-        puts output
-      end
-      puts "Created test app from gnarails"
-    end
-  end
+    `rm -R rails-test-app` if File.directory?("rails-test-app")
+    puts "Creating test app from gnarails"
 
-  config.after(:suite) do
-    `rm -R rails-test-app`
+    Bundler.with_clean_env do
+      `sh ./bin/test-setup.sh`
+    end
+
+    puts "Created test app from gnarails"
   end
 end
