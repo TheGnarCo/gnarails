@@ -12,13 +12,7 @@ RSpec.describe Gnarails do
     expect(contains_audit).to be true
   end
 
-  it "runs test-app suite" do
-    # Have different setup if CI
-    # docker-compose build
-    # docker-compose run web bundle exec rake db:create RAILS_ENV=test
-    # docker-compose run web bundle exec rake db:migrate RAILS_ENV=test
-    # docker-compose run web bundle exec rspec
-    #
+  it "runs test-app suite", unless: ENV["CI"] do
     Bundler.with_clean_env do
       Dir.chdir('rails-test-app') do
         `bundle exec rspec`
@@ -27,5 +21,12 @@ RSpec.describe Gnarails do
         expect(test_app_result).to be true
       end
     end
+  end
+
+  it "runs test-app suite in CI", if: ENV["CI"] do
+    `docker-compose build`
+    `docker-compose run web bundle exec rake db:create RAILS_ENV=test`
+    `docker-compose run web bundle exec rake db:migrate RAILS_ENV=test`
+    `docker-compose run web bundle exec rspec`
   end
 end
