@@ -12,18 +12,4 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
-
-  # TODO: only run this before the particular integration example
-  # pull test into separate file
-  # do different setup for CI
-  config.before(:suite) do
-    `rm -R rails-test-app` if File.directory?("rails-test-app")
-    puts "Creating test app from gnarails"
-
-    Bundler.with_clean_env do
-      `sh ./bin/test-setup.sh`
-    end
-
-    puts "Created test app from gnarails"
-  end
 end
