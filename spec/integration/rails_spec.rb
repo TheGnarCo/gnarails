@@ -33,6 +33,7 @@ RSpec.describe "Sample App Integration Testing" do
     end
 
     it "runs test-app suite" do
+      # TODO: this should fail if the command(s) fail. Currently, it doesn't
       `docker-compose run web bundle exec rspec`
     end
   end
