@@ -1,0 +1,5 @@
+# Ignore persistence file path
+.rspec_status
+
+# Ignore rails app created by test suite
+rails-test-app/

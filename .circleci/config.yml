@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  unit_test:
     docker:
       - image: circleci/ruby:2.4.2-stretch-node-browsers
         environment:
@@ -18,6 +18,14 @@ jobs:
           - gnarails-{{ checksum "Gemfile.lock" }}
           # fallback to using the latest cache if no exact match is found
           - gnarails-
+
+      # Docker compose is used in CI test suite
+      # - run:
+      #     name: Install Docker Compose
+      #     command: |
+      #       curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+      #       chmod +x ~/docker-compose
+      #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
 
       # Bundle install dependencies
       - run:
@@ -34,3 +42,57 @@ jobs:
       - run:
           name: RSpec
           command: bundle exec rspec
+  build-rails:
+    docker:
+      - image: ruby:2.4.2
+
+    steps:
+      - checkout
+
+      # Bundle install dependencies
+      - run:
+          name: Install Dependencies
+          command: bundle install --path vendor/bundle
+
+      # Generate test app
+      - run:
+          name: Generate Test App
+          command: mkdir rails-app && cd rails-app && rails new rails-test-app -m ../project/gnarly.rb --skip-test-unit --database=postgresql --skip-listen
+
+      - persist_to_workspace:
+          root: rails-app
+          paths:
+            - rails-test-app
+  test-rails-app:
+    docker:
+      - image: circleci/ruby:2.4.2-stretch-node-browsers
+        environment:
+          RAILS_ENV: test
+      - image: circleci/postgres:9.6.5
+    steps:
+      - attach_workspace:
+          at: /tmp/rails-app
+
+      - run:
+          name: Open Test App
+          command: cd /tmp/rails-app/rails-test-app
+
+      # Bundle install dependencies
+      - run:
+          name: install dependencies
+          command: bundle install --path vendor/bundle
+
+      # Tests
+      - run:
+          name: RSpec
+          command: bundle exec rspec
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - unit_test
+      - build-rails
+      - test-rails-app:
+          requires:
+            - build-rails

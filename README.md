@@ -1,6 +1,8 @@
+# Gnarails
+
 This repo contains a rails template, and all necessary associated files, to provide a fully-loaded Gnar Rails app. Clone this repo locally to use.
 
-# Usage
+## Usage
 ```sh
 $ git clone https://github.com/TheGnarCo/gnarails.git
 $ cd where/app/will/go
@@ -15,7 +17,7 @@ Error while installing pronto? Try installing [cmake](https://cmake.org/). You c
 brew bundle
 ```
 
-# Usage with React
+## Usage with React
 
 ```sh
 $ git clone https://github.com/TheGnarCo/gnarails.git
@@ -23,7 +25,7 @@ $ cd where/app/will/go
 $ rails new <APP_NAME> -m path/to/gnarly.rb --skip-test-unit --database=postgresql --webpack=react
 ```
 
-# Post-Install
+## Post-Install
 
 ```sh
 $ cd <APP_NAME>
@@ -52,7 +54,7 @@ $ bin/yarn test
   - Add Variable.
   - Name the variable `PRONTO_GITHUB_ACCESS_TOKEN` with the value from the previous Personal Access Token.
 
-# Usage with Docker
+## Usage with Docker
 
 A `Dockerfile` and `docker-compose.yml` file are created by default. When run with `--webpack=react`,
 there are two `Dockerfile`s: one for the Rails server and one for the assets server.
@@ -76,7 +78,7 @@ finally, start the server and visit `localhost:3000`:
 docker-compose up
 ```
 
-# Switching out Capybara Driver
+## Switching out Capybara Driver
 If you'd like to not run your tests headless, for example, to troubleshoot an issue and see what's on the screen, modify the `driven_by` driver in `spec/support/system_test_configuration.rb` to use `:selenium_chrome` instead of `:selenium_chrome_headless`. After the change, this block should look as follows:
 
 ```ruby
@@ -85,11 +87,11 @@ config.before(:each, type: :system, js: true) do
 end
 ```
 
-# Updating gnar-style
+## Updating gnar-style
 
 After updating the gnar-style gem, you must take care to ensure that your local rubocop file does not stray from the update made to the gem in an unintended manner. Any changes in the local rubocop file will take precedence over what is in the gnar-style gem. See the gnar-style [docs](https://github.com/TheGnarCo/gnar-style#overriding-styles) for more details.
 
-# Running the Application
+## Running the Application
 
 ```sh
 $ bin/rails s
@@ -104,6 +106,21 @@ $ bin/yarn start
 ```
 
 Visit `localhost:3000` in your browser
+
+## Development
+
+### Running the test suite
+It's required to generate a dummy application prior to running the test suite
+for the gem. The following script will create this application and run the test
+suite after:
+```
+./bin/test-run.sh
+```
+
+Note that the test suite will fail to start if the application is not created
+and the test suite will remove the dummy application at the conclusion of the
+test run. This ensures that the dummy application be refreshed after every test
+run.
 
 ## About The Gnar Company
 
