@@ -25,16 +25,22 @@ RSpec.describe "Sample App Integration Testing" do
     end
   end
 
-  context "in CI", if: ENV["CI"] do
-    before do
-      `docker-compose build`
-      `docker-compose run web bundle exec rake db:create RAILS_ENV=test`
-      `docker-compose run web bundle exec rake db:migrate RAILS_ENV=test`
-    end
+  # TODO: ignore entirely
+  # investigate use of a workflow to run test app test suite:
+  # https://circleci.com/docs/2.0/workflows/
+  # will that actually help? Won't that just have the same problem?
+  # maybe dump the created app in a workspace which a separate workflow picks up?
 
-    it "runs test-app suite" do
-      # TODO: this should fail if the command(s) fail. Currently, it doesn't
-      `docker-compose run web bundle exec rspec`
-    end
-  end
+  # context "in CI", if: ENV["CI"] do
+  #   before do
+  #     `docker-compose build`
+  #     `docker-compose run web bundle exec rake db:create RAILS_ENV=test`
+  #     `docker-compose run web bundle exec rake db:migrate RAILS_ENV=test`
+  #   end
+  #
+  #   it "runs test-app suite" do
+  #     # TODO: this should fail if the command(s) fail. Currently, it doesn't
+  #     `docker-compose run web bundle exec rspec`
+  #   end
+  # end
 end
