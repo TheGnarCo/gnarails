@@ -1,2 +1,5 @@
 # Ignore persistence file path
 .rspec_status
+
+# Ignore sample application used for testing
+rails-test-app/
