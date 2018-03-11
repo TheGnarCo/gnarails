@@ -57,7 +57,7 @@ jobs:
       # Generate test app
       - run:
           name: Generate Test App
-          command: mkdir rails-app && cd rails-app && rails new rails-test-app -m gnarly.rb --skip-test-unit --database=postgresql
+          command: mkdir rails-app && cd rails-app && rails new rails-test-app -m ../project/gnarly.rb --skip-test-unit --database=postgresql
 
       - persist_to_workspace:
           root: rails-app
