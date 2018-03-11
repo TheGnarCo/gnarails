@@ -74,6 +74,8 @@ def modify_npm_scripts
   end
 end
 
+gem "listen"
+
 gem_group :development, :test do
   gem 'axe-matchers'
   gem 'bullet'
