@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require "gnarails"
+Gnarails::Cli::Application.start(ARGV)
