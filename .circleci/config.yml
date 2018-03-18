@@ -18,6 +18,10 @@ jobs:
           - gnarails-{{ checksum "Gemfile.lock" }}
           # fallback to using the latest cache if no exact match is found
           - gnarails-
+      # cmake is required by Rugged, a dependency of Pronto
+      - run:
+          name: Install cmake
+          command: sudo apt-get -y -qq update && sudo apt-get -y -qq install cmake
 
       # Bundle install dependencies
       - run:
@@ -34,3 +38,8 @@ jobs:
       - run:
           name: RSpec
           command: bundle exec rspec
+
+      # Pronto
+      - run:
+          name: Pronto
+          command: ./script/ci_pronto
