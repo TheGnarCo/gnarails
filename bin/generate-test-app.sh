@@ -6,6 +6,7 @@ mkdir rails-test-app/db/migrate
 mkdir rails-test-app/spec/factories
 mkdir rails-test-app/spec/models
 mkdir rails-test-app/spec/system
+mkdir rails-test-app/spec/requests
 
 cp test-app/app/controllers/job_postings_controller.rb rails-test-app/app/controllers/job_postings_controller.rb
 cp test-app/app/models/job_posting.rb rails-test-app/app/models/job_posting.rb
@@ -16,3 +17,4 @@ cp test-app/db/migrate/20170918002433_create_job_postings.rb rails-test-app/db/m
 cp test-app/spec/factories/job_postings.rb rails-test-app/spec/factories/job_postings.rb
 cp test-app/spec/models/job_posting_spec.rb rails-test-app/spec/models/job_posting_spec.rb
 cp test-app/spec/system/viewing_all_job_postings_spec.rb rails-test-app/spec/system/viewing_all_job_postings_spec.rb
+cp test-app/spec/requests/status_spec.rb rails-test-app/spec/requests/status_spec.rb
