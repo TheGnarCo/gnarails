@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe JobPosting, type: :model do
   include ActiveSupport::Testing::TimeHelpers
 
+  it { should have_many :comments }
   it { should validate_presence_of(:title) }
   it { should define_enum_for(:status).with([:new_post, :pending, :complete]) }
 
