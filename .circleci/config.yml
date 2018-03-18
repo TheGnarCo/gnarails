@@ -164,7 +164,7 @@ workflows:
   build_and_test:
     jobs:
       - unit_test
-      - build-rails
-      - test-rails-app:
-          requires:
-            - build-rails
+      # - build-rails
+      # - test-rails-app:
+      #     requires:
+      #       - build-rails
