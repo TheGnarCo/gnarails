@@ -34,3 +34,8 @@ jobs:
       - run:
           name: RSpec
           command: bundle exec rspec
+
+      # Pronto
+      - run:
+          name: Pronto
+          command: ./script/ci_pronto
