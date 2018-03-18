@@ -35,6 +35,11 @@ jobs:
           name: RSpec
           command: bundle exec rspec
 
+      # Pronto
+      - run:
+          name: Pronto
+          command: ./script/ci_pronto
+
   build-rails:
     docker:
       - image: ruby:2.4.2
@@ -159,7 +164,7 @@ workflows:
   build_and_test:
     jobs:
       - unit_test
-      - build-rails
-      - test-rails-app:
-          requires:
-            - build-rails
+      # - build-rails
+      # - test-rails-app:
+      #     requires:
+      #       - build-rails
