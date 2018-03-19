@@ -1,5 +1,5 @@
 #!/bin/bash
-rails new rails-test-app -m gnarly.rb --skip-test-unit --database=postgresql
+bundle exec exe/gnarails new rails-test-app
 
 mkdir rails-test-app/app/views/job_postings
 mkdir rails-test-app/db/migrate

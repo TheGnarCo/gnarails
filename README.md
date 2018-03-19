@@ -1,8 +1,24 @@
 # Gnarails
 
-This repo contains a rails template, and all necessary associated files, to provide a fully-loaded Gnar Rails app. Clone this repo locally to use.
+This repo contains a rails template, and all necessary associated files, to provide a fully-loaded Gnar Rails app.
 
 ## Usage
+
+This template relies on pronto, which needs [cmake](https://cmake.org/) installed.
+
+### Using the CLI
+
+```sh
+$ gem install gnarails
+$ gnarails new <APP_NAME>
+```
+
+### Using the template
+
+If you want to reference the template directly and don't want to use the
+gnarails CLI command, you may clone the project (or reference the template from
+its HTTP location on github):
+
 ```sh
 $ git clone https://github.com/TheGnarCo/gnarails.git
 $ cd where/app/will/go
@@ -11,13 +27,16 @@ $ rails new <APP_NAME> -m path/to/gnarly.rb --skip-test-unit --database=postgres
 
 A`.railsrc` is provided. If you'd like to symlink it to your home directory, it'll run `rails new` with the options to run with postgres and not including test-unit. This `.railsrc` can be personalized to include the `--template=path/to/gnarly.rb` option depending on where you locally store this repo if you'd like to use this template every time.
 
-Error while installing pronto? Try installing [cmake](https://cmake.org/). You can do this on OS X with [homebrew](https://brew.sh/) by running:
+## Usage with React
+
+### Using the CLI
 
 ```sh
-brew bundle
+$ gem install gnarails
+$ gnarails new <APP_NAME> --webpack=react
 ```
 
-## Usage with React
+### Using the template
 
 ```sh
 $ git clone https://github.com/TheGnarCo/gnarails.git

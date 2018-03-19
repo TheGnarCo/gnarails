@@ -126,14 +126,23 @@ copy_file "templates/.ruby-version", ".ruby-version"
 remove_file ".gitignore"
 copy_file "templates/.gitignore", ".gitignore"
 
+# Disable Listen
+gsub_file "config/environments/development.rb",
+  "config.file_watcher = ActiveSupport::EventedFileUpdateChecker",
+  "# config.file_watcher = ActiveSupport::EventedFileUpdateChecker"
+
 # RSpec
-run "bundle install"
-run "rails generate rspec:install"
+generate "rspec:install"
 remove_file ".rspec"
 copy_file "templates/.rspec", ".rspec"
 gsub_file "spec/rails_helper.rb",
   "# Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }",
   "Dir[Rails.root.join(\"spec/support/**/*.rb\")].each { |f| require f }"
+
+# Enable Listen
+gsub_file "config/environments/development.rb",
+  "# config.file_watcher = ActiveSupport::EventedFileUpdateChecker",
+  "config.file_watcher = ActiveSupport::EventedFileUpdateChecker"
 
 # FactoryBot
 copy_file "templates/spec/support/factory_bot.rb", "spec/support/factory_bot.rb"
