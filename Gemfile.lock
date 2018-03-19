@@ -4,6 +4,7 @@ PATH
     gnarails (0.1.0)
       rails
       rspec-rails
+      thor
 
 GEM
   remote: https://rubygems.org/
