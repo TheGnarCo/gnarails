@@ -8,6 +8,7 @@
       <th>Posted At</th>
       <th>Title</th>
       <th>Status</th>
+      <th>Comments</th>
   </thead>
   <tbody>
     <% @job_postings.each do |posting| %>
@@ -15,6 +16,7 @@
         <td class="posting-date"><%= posting.posted_at %></td>
         <td class="posting-title"><%= posting.title %></td>
         <td class="posting-status"><%= posting.status %></td>
+        <td><%= posting.comments.map(&:body) %></td>
       </tr>
     <% end %>
   </tbody>
