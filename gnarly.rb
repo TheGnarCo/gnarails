@@ -229,6 +229,7 @@ else
 end
 
 # README
+remove_file "README.md"
 copy_file "templates/README.md", "README.md"
 gsub_file "README.md", "__application_name__", "#{app_name}"
 
