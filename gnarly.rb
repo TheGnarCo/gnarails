@@ -228,6 +228,10 @@ else
   copy_file "templates/docker-compose.yml/docker-compose-standard.yml", "docker-compose.yml"
 end
 
+# README
+copy_file "templates/README.md", "README.md"
+gsub_file "README.md", "__application_name__", "#{app_name}"
+
 # Retrieve all gems, set up git, display next steps
 after_bundle do
   if react
