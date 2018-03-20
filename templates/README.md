@@ -15,13 +15,12 @@ $ open http://localhost:3000
 
 ### Testing Dependency:
 
-To run acceptance tests `chromedriver` is required.
+To run acceptance tests chromedriver is required.
 
-Install via homebrew or npm respectively:
+If using macOS and homebrew, you can install chromedriver with the following
+command:
 ```sh
 $ brew install chromedriver
-
-$ npm install chromedriver
 ```
 
 To run the full test suite:
