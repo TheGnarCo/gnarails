@@ -5,6 +5,8 @@ def source_paths
     [File.expand_path(File.dirname(__FILE__))]
 end
 
+RUBY_VERSION = "2.5.0".freeze
+
 JS_DEPENDENCIES = [
   "babel-preset-es2015",
   "babel-preset-stage-0",
@@ -21,7 +23,7 @@ JS_DEPENDENCIES = [
   "redux",
   "redux-form",
   "redux-thunk",
-  "schlepp"
+  "schlepp",
 ]
 
 JS_DEV_DEPENDENCIES = [
@@ -39,7 +41,7 @@ JS_DEV_DEPENDENCIES = [
   "nock",
   "react-dom",
   "react-test-renderer",
-  "redux-mock-store"
+  "redux-mock-store",
 ]
 
 def add_js_files
@@ -113,7 +115,7 @@ gsub_file "Gemfile", /.*sqlite.*\n/, ""
 
 # Add ruby version to Gemfile
 insert_into_file "Gemfile", after: "source 'https://rubygems.org'" do
-  "\nruby \"2.4.2\""
+  "\nruby \"#{RUBY_VERSION}\""
 end
 
 # Use scss
@@ -121,6 +123,7 @@ run "mv app/assets/stylesheets/application.css app/assets/stylesheets/applicatio
 
 # Set ruby version
 copy_file "templates/.ruby-version", ".ruby-version"
+gsub_file ".ruby-version", "__ruby_version__", RUBY_VERSION
 
 # Use gitignore template
 remove_file ".gitignore"
@@ -200,6 +203,7 @@ end
 
 # Circle CI
 copy_file "templates/.circleci/config.yml", ".circleci/config.yml"
+gsub_file ".circleci/config.yml", "__ruby_version__", RUBY_VERSION
 gsub_file ".circleci/config.yml", "__application_name__", "#{app_name}"
 
 # Capybara
@@ -217,9 +221,11 @@ react = options[:webpack] == "react"
 
 # Docker
 copy_file "templates/Dockerfile", "Dockerfile"
+gsub_file "Dockerfile", "__ruby_version__", RUBY_VERSION
 
 if react
   copy_file "templates/Dockerfile-assets", "Dockerfile-assets"
+  gsub_file "Dockerfilea-assets", "__ruby_version__", RUBY_VERSION
   copy_file "templates/.env.docker/.env.docker-webpack", ".env.docker"
   copy_file "templates/.env.docker-assets", ".env.docker-assets"
   copy_file "templates/docker-compose.yml/docker-compose-webpack.yml", "docker-compose.yml"
