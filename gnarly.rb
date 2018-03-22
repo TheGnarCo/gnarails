@@ -215,7 +215,7 @@ gsub_file "Dockerfile", "__ruby_version__", RUBY_VERSION
 
 if react
   copy_file "templates/Dockerfile-assets", "Dockerfile-assets"
-  gsub_file "Dockerfilea-assets", "__ruby_version__", RUBY_VERSION
+  gsub_file "Dockerfile-assets", "__ruby_version__", RUBY_VERSION
   copy_file "templates/.env.docker/.env.docker-webpack", ".env.docker"
   copy_file "templates/.env.docker-assets", ".env.docker-assets"
   copy_file "templates/docker-compose.yml/docker-compose-webpack.yml", "docker-compose.yml"
