@@ -29,13 +29,6 @@ A`.railsrc` is provided. If you'd like to symlink it to your home directory, it'
 
 ## Usage with React
 
-### Using the CLI
-
-```sh
-$ gem install gnarails
-$ gnarails new <APP_NAME> --webpack=react
-```
-
 ### Using the template
 
 ```sh
