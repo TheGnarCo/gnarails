@@ -8,41 +8,299 @@ end
 RUBY_VERSION = "2.5.0".freeze
 
 JS_DEPENDENCIES = [
-  "babel-preset-es2015",
-  "babel-preset-stage-0",
-  "classnames",
-  "es6-object-assign",
-  "es6-promise",
-  "history",
-  "lodash",
-  "react-entity-getter",
-  "react-redux",
-  "react-router",
-  "react-router-dom",
-  "react-router-redux@next",
-  "redux",
-  "redux-form",
-  "redux-thunk",
-  "schlepp",
-]
+  "babel-preset-es2015".freeze,
+  "babel-preset-stage-0".freeze,
+  "classnames".freeze,
+  "es6-object-assign".freeze,
+  "es6-promise".freeze,
+  "history".freeze,
+  "lodash".freeze,
+  "react-entity-getter".freeze,
+  "react-redux".freeze,
+  "react-router".freeze,
+  "react-router-dom".freeze,
+  "react-router-redux@next".freeze,
+  "redux".freeze,
+  "redux-form".freeze,
+  "redux-thunk".freeze,
+  "schlepp".freeze,
+].freeze
 
 JS_DEV_DEPENDENCIES = [
-  "babel-eslint",
-  "enzyme",
-  "enzyme-adapter-react-16",
-  "eslint",
-  "eslint-config-airbnb",
-  "eslint-plugin-import",
-  "eslint-plugin-jsx-a11y@^5.1.1",
-  "eslint-plugin-react",
-  "expect",
-  "jsdom",
-  "mocha",
-  "nock",
-  "react-dom",
-  "react-test-renderer",
-  "redux-mock-store",
-]
+  "babel-eslint".freeze,
+  "enzyme".freeze,
+  "enzyme-adapter-react-16".freeze,
+  "eslint".freeze,
+  "eslint-config-airbnb".freeze,
+  "eslint-plugin-import".freeze,
+  "eslint-plugin-jsx-a11y@^5.1.1".freeze,
+  "eslint-plugin-react".freeze,
+  "expect".freeze,
+  "jsdom".freeze,
+  "mocha".freeze,
+  "nock".freeze,
+  "react-dom".freeze,
+  "react-test-renderer".freeze,
+  "redux-mock-store".freeze,
+].freeze
+
+def create_gnarly_rails_app
+  add_gems
+  setup_database
+  add_ruby_version
+  setup_scss
+  setup_gitignore
+  setup_testing
+  setup_analysis
+  setup_environments
+  setup_readme
+  post_bundle
+end
+
+def add_gems
+  gem_group :development, :test do
+    gem 'axe-matchers'
+    gem 'bullet'
+    gem 'bundler-audit'
+    gem 'capybara'
+    gem 'dotenv-rails'
+    gem 'factory_bot_rails'
+    gem 'gnar-style', require: false
+    gem 'lol_dba'
+    gem 'okcomputer'
+    gem 'pronto'
+    gem 'pronto-brakeman', require: false
+    gem 'pronto-rubocop', require: false
+    gem 'pronto-scss', require: false
+    gem 'pry-rails'
+    gem 'rspec-its'
+    gem 'rspec-rails'
+    gem 'scss_lint', require: false
+    gem 'selenium-webdriver'
+    gem 'shoulda-matchers'
+    gem 'simplecov', require: false
+  end
+end
+
+def setup_database
+  remove_file "config/database.yml"
+  copy_file "templates/database.yml", "config/database.yml"
+  gsub_file "config/database.yml", "__application_name__", app_name
+
+  gsub_file "Gemfile", /.*sqlite.*\n/, ""
+end
+
+def add_ruby_version
+  insert_into_file "Gemfile", after: "source 'https://rubygems.org'" do
+    "\nruby \"#{RUBY_VERSION}\""
+  end
+
+  copy_file "templates/.ruby-version", ".ruby-version"
+  gsub_file ".ruby-version", "__ruby_version__", RUBY_VERSION
+end
+
+def setup_scss
+  run "mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss"
+end
+
+def setup_gitignore
+  remove_file ".gitignore"
+  copy_file "templates/.gitignore", ".gitignore"
+end
+
+def setup_testing
+  setup_rspec
+  setup_factory_bot
+  setup_system_tests
+  setup_shoulda
+  setup_bullet
+  limit_test_logging
+end
+
+def setup_rspec
+  generate "rspec:install"
+  remove_file ".rspec"
+  copy_file "templates/.rspec", ".rspec"
+  gsub_file "spec/rails_helper.rb",
+    "# Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }",
+    "Dir[Rails.root.join(\"spec/support/**/*.rb\")].each { |f| require f }"
+end
+
+def setup_factory_bot
+  copy_file "templates/spec/support/factory_bot.rb", "spec/support/factory_bot.rb"
+end
+
+def setup_system_tests
+  copy_file "templates/spec/support/system_test_configuration.rb", "spec/support/system_test_configuration.rb"
+
+  insert_into_file "spec/rails_helper.rb", after: "# Add additional requires below this line. Rails is not loaded until this point!\n" do
+    "require \"capybara/rails\"\n"\
+      "require \"axe/rspec\"\n"\
+      "require \"selenium/webdriver\"\n"
+  end
+
+  append_to_file "spec/rails_helper.rb" do
+    "\nCapybara.default_max_wait_time = 3\n"
+  end
+end
+
+def setup_shoulda
+  append_to_file "spec/rails_helper.rb" do
+    "\nShoulda::Matchers.configure do |config|\n  config.integrate do |with|\n    with.test_framework :rspec\n    with.library :rails\n  end\nend"
+  end
+end
+
+def setup_bullet
+  insert_into_file "config/environments/test.rb", after: "Rails.application.configure do" do
+    "\n  # Bullet gem initialization\n  config.after_initialize do\n    Bullet.enable = true\n    Bullet.bullet_logger = true\n    Bullet.raise = true\n  end\n"
+  end
+
+  insert_into_file "spec/rails_helper.rb", after: "RSpec.configure do |config|" do
+    "\n  if Bullet.enable?\n    config.before(:each) do\n      Bullet.start_request\n    end\n\n    config.after(:each) do\n      Bullet.perform_out_of_channel_notifications if Bullet.notification?\n      Bullet.end_request\n    end\n  end\n"
+  end
+end
+
+def limit_test_logging
+  insert_into_file "config/environments/test.rb", after: "Rails.application.configure do" do
+    "\n"\
+      "  unless ENV[\"RAILS_ENABLE_TEST_LOG\"]\n"\
+      "    config.logger = Logger.new(nil)\n"\
+      "    config.log_level = :fatal\n"\
+      "  end\n"
+  end
+end
+
+def setup_analysis
+  setup_linting
+  setup_pronto
+  setup_brakeman
+  setup_simplecov
+end
+
+def setup_linting
+  copy_file "templates/.rubocop.yml", ".rubocop.yml"
+  copy_file "templates/.scss-lint.yml", ".scss-lint.yml"
+end
+
+def setup_pronto
+  copy_file "templates/.pronto.yml", ".pronto.yml"
+  copy_file "templates/script/ci_pronto", "script/ci_pronto"
+  run "chmod +x script/ci_pronto"
+end
+
+def setup_brakeman
+  copy_file "templates/script/brakeman", "script/brakeman"
+  run "chmod +x script/brakeman"
+end
+
+def setup_simplecov
+  prepend_to_file "spec/spec_helper.rb" do
+    "require \"simplecov\"\n\n# save to CircleCI's artifacts directory if we're on CircleCI\n"\
+      "if ENV[\"CIRCLE_ARTIFACTS\"]\n"\
+      "  dir = File.join(ENV[\"CIRCLE_ARTIFACTS\"], \"coverage\")\n"\
+      "  SimpleCov.coverage_dir(dir)\n"\
+      "end\n\n"\
+      "SimpleCov.start \"rails\" if (ENV[\"CI\"] || ENV[\"COVERAGE\"])\n\n"
+  end
+end
+
+def setup_environments
+  setup_dotenv
+  setup_ci
+  setup_docker
+end
+
+def setup_dotenv
+  copy_file "templates/.env.development", ".env.development"
+  copy_file "templates/.env.test", ".env.test"
+  gsub_file ".env.development", "__application_name__", app_name
+  gsub_file ".env.test", "__application_name__", app_name
+end
+
+def setup_ci
+  copy_file "templates/.circleci/config.yml", ".circleci/config.yml"
+  gsub_file ".circleci/config.yml", "__ruby_version__", RUBY_VERSION
+  gsub_file ".circleci/config.yml", "__application_name__", app_name
+end
+
+def setup_docker
+  copy_file "templates/Dockerfile", "Dockerfile"
+  gsub_file "Dockerfile", "__ruby_version__", RUBY_VERSION
+
+  if react?
+    setup_docker_react
+  else
+    setup_docker_standard
+  end
+end
+
+def setup_docker_standard
+  copy_file "templates/.env.docker/.env.docker-standard", ".env.docker"
+  copy_file "templates/docker-compose.yml/docker-compose-standard.yml", "docker-compose.yml"
+end
+
+def setup_docker_react
+  copy_file "templates/Dockerfile-assets", "Dockerfile-assets"
+  gsub_file "Dockerfile-assets", "__ruby_version__", RUBY_VERSION
+  copy_file "templates/.env.docker/.env.docker-webpack", ".env.docker"
+  copy_file "templates/.env.docker-assets", ".env.docker-assets"
+  copy_file "templates/docker-compose.yml/docker-compose-webpack.yml", "docker-compose.yml"
+end
+
+def setup_readme
+  remove_file "README.md"
+  copy_file "templates/README.md", "README.md"
+  gsub_file "README.md", "__application_name__", app_name
+end
+
+def react?
+  options[:webpack] == "react"
+end
+
+def post_bundle
+  after_bundle do
+    setup_react if react?
+    remove_dir "test"
+    git :init
+
+    ascii_art
+    post_install_instructions
+  end
+end
+
+def ascii_art
+  puts ""
+  puts "  _____     __        _     ____     ____     "
+  puts " / / \\ \\   |  \\      | |   /    \\   |    \\    "
+  puts "| |  | |   |   \\     | |  |  /\\  |  | |\\  \\   "
+  puts "| |   -    |    \\    | |  | |  | |  | | |  |  "
+  puts "| |        |  |\\ \\   | |  | |__| |  | |/  /   "
+  puts "| |  / --  |  | \\ \\  | |  | |  | |  |    /    "
+  puts "| |    \\ \\ |  |  \\ \\ | |  | |  | |  | |\\ \\    "
+  puts " \\ \\   | | |  |   \\ \\| |  | |  | |  | | \\ \\   "
+  puts "  \\  --/ / |  |    \\   |  | |  | |  | |  \\ \\  "
+  puts "   -----/  |__|     \\__|  |_|  |_|  |_|   \\_\\ "
+end
+
+def post_install_instructions
+  puts "\n\nNEXT STEPS"
+  puts "=========="
+  puts "* Install Google Chrome for acceptance tests"
+  puts "* Install ChromeDriver for default headless acceptance tests: brew install chromedriver"
+  puts "* Follow the post-install instructions to set up circle to allow gnarbot to comment on PRs. https://github.com/TheGnarCo/gnarails#post-install"
+end
+
+def setup_react
+  install_js_deps
+  add_js_files
+  modify_npm_scripts
+end
+
+def install_js_deps
+  puts "Installing Gnar react packages"
+  run "yarn add #{JS_DEPENDENCIES.join(' ')}"
+  run "yarn add --dev #{JS_DEV_DEPENDENCIES.join(' ')}"
+end
 
 def add_js_files
   directory "templates/react/js", "app/javascript"
@@ -59,12 +317,6 @@ def add_js_files
   remove_file "app/javascript/packs/application.js"
 end
 
-def install_js_deps
-  puts "Installing Gnar react packages"
-  run "yarn add #{JS_DEPENDENCIES.join(' ')}"
-  run "yarn add --dev #{JS_DEV_DEPENDENCIES.join(' ')}"
-end
-
 def modify_npm_scripts
   insert_into_file "package.json", before: "  \"dependencies\": {\n" do
     "  \"scripts\": {\n"\
@@ -76,184 +328,4 @@ def modify_npm_scripts
   end
 end
 
-gem_group :development, :test do
-  gem 'axe-matchers'
-  gem 'bullet'
-  gem 'bundler-audit'
-  gem 'capybara'
-  gem 'dotenv-rails'
-  gem 'factory_bot_rails'
-  gem 'gnar-style', require: false
-  gem 'lol_dba'
-  gem 'okcomputer'
-  gem 'pronto'
-  gem 'pronto-brakeman', require: false
-  gem 'pronto-rubocop', require: false
-  gem 'pronto-scss', require: false
-  gem 'pry-rails'
-  gem 'rspec-its'
-  gem 'rspec-rails'
-  gem 'scss_lint', require: false
-  gem 'selenium-webdriver'
-  gem 'shoulda-matchers'
-  gem 'simplecov', require: false
-end
-
-# Set up database configuration
-remove_file "config/database.yml"
-copy_file "templates/database.yml", "config/database.yml"
-gsub_file "config/database.yml", "__application_name__", "#{app_name}"
-
-# Configure dotenv files
-copy_file "templates/.env.development", ".env.development"
-copy_file "templates/.env.test", ".env.test"
-gsub_file ".env.development", "__application_name__", "#{app_name}"
-gsub_file ".env.test", "__application_name__", "#{app_name}"
-
-# Remove sqlite gem, if present
-gsub_file "Gemfile", /.*sqlite.*\n/, ""
-
-# Add ruby version to Gemfile
-insert_into_file "Gemfile", after: "source 'https://rubygems.org'" do
-  "\nruby \"#{RUBY_VERSION}\""
-end
-
-# Use scss
-run "mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss"
-
-# Set ruby version
-copy_file "templates/.ruby-version", ".ruby-version"
-gsub_file ".ruby-version", "__ruby_version__", RUBY_VERSION
-
-# Use gitignore template
-remove_file ".gitignore"
-copy_file "templates/.gitignore", ".gitignore"
-
-# RSpec
-generate "rspec:install"
-remove_file ".rspec"
-copy_file "templates/.rspec", ".rspec"
-gsub_file "spec/rails_helper.rb",
-  "# Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }",
-  "Dir[Rails.root.join(\"spec/support/**/*.rb\")].each { |f| require f }"
-
-# FactoryBot
-copy_file "templates/spec/support/factory_bot.rb", "spec/support/factory_bot.rb"
-
-# System Tests
-copy_file "templates/spec/support/system_test_configuration.rb", "spec/support/system_test_configuration.rb"
-
-# Shoulda Matchers
-append_to_file "spec/rails_helper.rb" do
-  "\nShoulda::Matchers.configure do |config|\n  config.integrate do |with|\n    with.test_framework :rspec\n    with.library :rails\n  end\nend"
-end
-
-# Bullet
-insert_into_file "config/environments/test.rb", after: "Rails.application.configure do" do
-  "\n  # Bullet gem initialization\n  config.after_initialize do\n    Bullet.enable = true\n    Bullet.bullet_logger = true\n    Bullet.raise = true\n  end\n"
-end
-
-insert_into_file "spec/rails_helper.rb", after: "RSpec.configure do |config|" do
-  "\n  if Bullet.enable?\n    config.before(:each) do\n      Bullet.start_request\n    end\n\n    config.after(:each) do\n      Bullet.perform_out_of_channel_notifications if Bullet.notification?\n      Bullet.end_request\n    end\n  end\n"
-end
-
-# Limit Test Logging
-insert_into_file "config/environments/test.rb", after: "Rails.application.configure do" do
-  "\n"\
-    "  unless ENV[\"RAILS_ENABLE_TEST_LOG\"]\n"\
-    "    config.logger = Logger.new(nil)\n"\
-    "    config.log_level = :fatal\n"\
-    "  end\n"
-end
-
-# Rubocop
-copy_file "templates/.rubocop.yml", ".rubocop.yml"
-
-# SCSS Lint
-copy_file "templates/.scss-lint.yml", ".scss-lint.yml"
-
-# Pronto
-copy_file "templates/.pronto.yml", ".pronto.yml"
-copy_file "templates/script/ci_pronto", "script/ci_pronto"
-run "chmod +x script/ci_pronto"
-
-# Brakeman CI script
-copy_file "templates/script/brakeman", "script/brakeman"
-run "chmod +x script/brakeman"
-
-# Simplecov
-prepend_to_file "spec/spec_helper.rb" do
-  "require \"simplecov\"\n\n# save to CircleCI's artifacts directory if we're on CircleCI\n"\
-    "if ENV[\"CIRCLE_ARTIFACTS\"]\n"\
-    "  dir = File.join(ENV[\"CIRCLE_ARTIFACTS\"], \"coverage\")\n"\
-    "  SimpleCov.coverage_dir(dir)\n"\
-    "end\n\n"\
-    "SimpleCov.start \"rails\" if (ENV[\"CI\"] || ENV[\"COVERAGE\"])\n\n"
-end
-
-# Circle CI
-copy_file "templates/.circleci/config.yml", ".circleci/config.yml"
-gsub_file ".circleci/config.yml", "__ruby_version__", RUBY_VERSION
-gsub_file ".circleci/config.yml", "__application_name__", "#{app_name}"
-
-# Capybara
-insert_into_file "spec/rails_helper.rb", after: "# Add additional requires below this line. Rails is not loaded until this point!\n" do
-  "require \"capybara/rails\"\n"\
-    "require \"axe/rspec\"\n"\
-    "require \"selenium/webdriver\"\n"
-end
-
-append_to_file "spec/rails_helper.rb" do
-  "\n\nCapybara.default_max_wait_time = 3\n"
-end
-
-react = options[:webpack] == "react"
-
-# Docker
-copy_file "templates/Dockerfile", "Dockerfile"
-gsub_file "Dockerfile", "__ruby_version__", RUBY_VERSION
-
-if react
-  copy_file "templates/Dockerfile-assets", "Dockerfile-assets"
-  gsub_file "Dockerfile-assets", "__ruby_version__", RUBY_VERSION
-  copy_file "templates/.env.docker/.env.docker-webpack", ".env.docker"
-  copy_file "templates/.env.docker-assets", ".env.docker-assets"
-  copy_file "templates/docker-compose.yml/docker-compose-webpack.yml", "docker-compose.yml"
-else
-  copy_file "templates/.env.docker/.env.docker-standard", ".env.docker"
-  copy_file "templates/docker-compose.yml/docker-compose-standard.yml", "docker-compose.yml"
-end
-
-# README
-remove_file "README.md"
-copy_file "templates/README.md", "README.md"
-gsub_file "README.md", "__application_name__", "#{app_name}"
-
-# Retrieve all gems, set up git, display next steps
-after_bundle do
-  if react
-    install_js_deps
-    add_js_files
-    modify_npm_scripts
-  end
-
-  remove_dir "test"
-  git :init
-  puts ""
-  puts "  _____     __        _     ____     ____     "
-  puts " / / \\ \\   |  \\      | |   /    \\   |    \\    "
-  puts "| |  | |   |   \\     | |  |  /\\  |  | |\\  \\   "
-  puts "| |   -    |    \\    | |  | |  | |  | | |  |  "
-  puts "| |        |  |\\ \\   | |  |  __| |  | |/  /   "
-  puts "| |  / --  |  | \\ \\  | |  | |  | |  |    /    "
-  puts "| |    \\ \\ |  |  \\ \\ | |  | |  | |  | |\\ \\    "
-  puts " \\ \\   | | |  |   \\ \\| |  | |  | |  | | \\ \\   "
-  puts "  \\  --/ / |  |    \\   |  | |  | |  | |  \\ \\  "
-  puts "   -----/  |__|     \\__|  |_|  |_|  |_|   \\_\\ "
-
-  puts "\n\nNEXT STEPS"
-  puts "=========="
-  puts "* Install Google Chrome for acceptance tests"
-  puts "* Install ChromeDriver for default headless acceptance tests: brew install chromedriver"
-  puts "* Follow the post-install instructions to set up circle to allow gnarbot to comment on PRs. https://github.com/TheGnarCo/gnarails#post-install"
-end
+create_gnarly_rails_app
