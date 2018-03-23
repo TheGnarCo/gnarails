@@ -131,12 +131,11 @@ def setup_factory_bot
 end
 
 def setup_system_tests
-  copy_file "templates/spec/support/system_test_configuration.rb", "spec/support/system_test_configuration.rb"
+  copy_file "templates/spec/support/system_test_configuration.rb",
+    "spec/support/system_test_configuration.rb"
 
-  insert_into_file "spec/rails_helper.rb", after: "# Add additional requires below this line. Rails is not loaded until this point!\n" do
-    "require \"capybara/rails\"\n"\
-      "require \"axe/rspec\"\n"\
-      "require \"selenium/webdriver\"\n"
+  insert_into_file "spec/rails_helper.rb", after: "Rails is not loaded until this point!\n" do
+    system_tests_rails_helper_text
   end
 
   append_to_file "spec/rails_helper.rb" do
@@ -144,29 +143,79 @@ def setup_system_tests
   end
 end
 
+def system_tests_rails_helper_text
+  <<~SYSTEM_TESTS
+    require "capybara/rails"
+    require "axe/rspec"
+    require "selenium/webdriver"
+  SYSTEM_TESTS
+end
+
 def setup_shoulda
   append_to_file "spec/rails_helper.rb" do
-    "\nShoulda::Matchers.configure do |config|\n  config.integrate do |with|\n    with.test_framework :rspec\n    with.library :rails\n  end\nend"
+    shoulda_rails_helper_text
   end
+end
+
+def shoulda_rails_helper_text
+  <<~SHOULDA
+
+    Shoulda::Matchers.configure do |config|
+      config.integrate do |with|
+        with.test_framework :rspec
+        with.library :rails
+      end
+    end
+  SHOULDA
 end
 
 def setup_bullet
   insert_into_file "config/environments/test.rb", after: "Rails.application.configure do" do
-    "\n  # Bullet gem initialization\n  config.after_initialize do\n    Bullet.enable = true\n    Bullet.bullet_logger = true\n    Bullet.raise = true\n  end\n"
+    bullet_test_env_text
   end
 
   insert_into_file "spec/rails_helper.rb", after: "RSpec.configure do |config|" do
-    "\n  if Bullet.enable?\n    config.before(:each) do\n      Bullet.start_request\n    end\n\n    config.after(:each) do\n      Bullet.perform_out_of_channel_notifications if Bullet.notification?\n      Bullet.end_request\n    end\n  end\n"
+    bullet_rails_helper_text
   end
+end
+
+def bullet_test_env_text
+  <<-BULLET_TEST
+
+  # Bullet gem initialization
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.bullet_logger = true
+    Bullet.raise = true
+  end
+  BULLET_TEST
+end
+
+def bullet_rails_helper_text
+  <<-BULLET_RAILS
+
+  if Bullet.enable?
+    config.before(:each) do
+      Bullet.start_request
+    end
+
+    config.after(:each) do
+      Bullet.perform_out_of_channel_notifications if Bullet.notification?
+      Bullet.end_request
+    end
+  end
+  BULLET_RAILS
 end
 
 def limit_test_logging
   insert_into_file "config/environments/test.rb", after: "Rails.application.configure do" do
-    "\n"\
-      "  unless ENV[\"RAILS_ENABLE_TEST_LOG\"]\n"\
-      "    config.logger = Logger.new(nil)\n"\
-      "    config.log_level = :fatal\n"\
-      "  end\n"
+    <<-TEST_LOGGING
+
+  unless ENV[\"RAILS_ENABLE_TEST_LOG\"]
+    config.logger = Logger.new(nil)
+    config.log_level = :fatal
+  end
+    TEST_LOGGING
   end
 end
 
@@ -195,12 +244,18 @@ end
 
 def setup_simplecov
   prepend_to_file "spec/spec_helper.rb" do
-    "require \"simplecov\"\n\n# save to CircleCI's artifacts directory if we're on CircleCI\n"\
-      "if ENV[\"CIRCLE_ARTIFACTS\"]\n"\
-      "  dir = File.join(ENV[\"CIRCLE_ARTIFACTS\"], \"coverage\")\n"\
-      "  SimpleCov.coverage_dir(dir)\n"\
-      "end\n\n"\
-      "SimpleCov.start \"rails\" if (ENV[\"CI\"] || ENV[\"COVERAGE\"])\n\n"
+    <<~SIMPLECOV
+      require "simplecov"
+
+      # Save to CircleCI's artifacts directory if we're on CircleCI
+      if ENV["CIRCLE_ARTIFACTS"]
+        dir = File.join(ENV["CIRCLE_ARTIFACTS"], "coverage")
+        SimpleCov.coverage_dir(dir)
+      end
+
+      SimpleCov.start "rails" if (ENV["CI"] || ENV["COVERAGE"])
+
+    SIMPLECOV
   end
 end
 
@@ -263,13 +318,13 @@ def post_bundle
     remove_dir "test"
     git :init
 
+    puts ""
     ascii_art
     post_install_instructions
   end
 end
 
 def ascii_art
-  puts ""
   puts "  _____     __        _     ____     ____     "
   puts " / / \\ \\   |  \\      | |   /    \\   |    \\    "
   puts "| |  | |   |   \\     | |  |  /\\  |  | |\\  \\   "
@@ -287,12 +342,14 @@ def post_install_instructions
   puts "=========="
   puts "* Install Google Chrome for acceptance tests"
   puts "* Install ChromeDriver for default headless acceptance tests: brew install chromedriver"
-  puts "* Follow the post-install instructions to set up circle to allow gnarbot to comment on PRs. https://github.com/TheGnarCo/gnarails#post-install"
+  puts "* Follow the post-install instructions to set up circle to allow gnarbot to comment on PRs."
+  puts "  * https://github.com/TheGnarCo/gnarails#post-install"
 end
 
 def setup_react
   install_js_deps
   add_js_files
+  modify_js_files
   modify_npm_scripts
 end
 
@@ -310,21 +367,28 @@ def add_js_files
   copy_file "templates/react/controllers/home_controller.rb", "app/controllers/home_controller.rb"
   copy_file "templates/react/.babelrc", ".babelrc", force: true
   copy_file "templates/react/.eslintrc.js", ".eslintrc.js", force: true
+end
+
+def modify_js_files
   gsub_file "app/views/layouts/application.html.erb",
     "placeholder_application_title",
-    app_name.gsub("-", "_").titleize
-  gsub_file "app/javascript/app_constants/index.js", "  APP_NAME: 'CHANGE_ME',", "  APP_NAME: '#{app_name}',"
+    app_name.tr("-", "_").titleize
+  gsub_file "app/javascript/app_constants/index.js",
+    "  APP_NAME: 'CHANGE_ME',",
+    "  APP_NAME: '#{app_name}',"
   remove_file "app/javascript/packs/application.js"
 end
 
 def modify_npm_scripts
   insert_into_file "package.json", before: "  \"dependencies\": {\n" do
-    "  \"scripts\": {\n"\
-      "    \"start\": \"./bin/webpack-dev-server\",\n"\
-      "    \"mocha\": \"NODE_PATH=./app/javascript mocha --compilers js:babel-register --require babel-polyfill --require app/javascript/test/.setup.js --recursive './app/javascript/**/*.tests.js*'\",\n"\
-      "    \"lint\": \"eslint app/javascript\",\n"\
-      "    \"test\": \"npm run lint && npm run mocha\"\n"\
-      "  },\n"
+    <<-NPM_SCRIPTS
+  "scripts": {
+    "start": "./bin/webpack-dev-server",
+    "mocha": "NODE_PATH=./app/javascript mocha --compilers js:babel-register --require babel-polyfill --require app/javascript/test/.setup.js --recursive './app/javascript/**/*.tests.js*'",
+    "lint": "eslint app/javascript",
+    "test": "npm run lint && npm run mocha"
+  },
+    NPM_SCRIPTS
   end
 end
 
