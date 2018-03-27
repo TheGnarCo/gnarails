@@ -16,8 +16,6 @@ jobs:
       - restore_cache:
           keys:
           - gnarails-{{ checksum "gnarails.gemspec" }}
-          # fallback to using the latest cache if no exact match is found
-          - gnarails-
 
       # cmake is required by Rugged, a dependency of Pronto
       - run:
