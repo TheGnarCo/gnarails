@@ -1,5 +1,7 @@
 ## Current release (in development)
 
+## 0.9.0 - 2018-03-26
+
 * Support all rails generator options in CLI new command [#99](https://github.com/TheGnarCo/gnarails/pull/99)
 
   [Kevin Murphy](https://github.com/kevin-j-m)
