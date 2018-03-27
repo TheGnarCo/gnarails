@@ -1,6 +1,7 @@
 # Gnarails
 
-This repo contains a rails template, and all necessary associated files, to provide a fully-loaded Gnar Rails app.
+Create a gnarly rails app, ready to go with all the base functionality you can
+expect from any rails application developed by The Gnar Company.
 
 ## Usage
 
@@ -20,9 +21,7 @@ gnarails CLI command, you may clone the project (or reference the template from
 its HTTP location on github):
 
 ```sh
-$ git clone https://github.com/TheGnarCo/gnarails.git
-$ cd where/app/will/go
-$ rails new <APP_NAME> -m path/to/gnarly.rb --skip-test-unit --database=postgresql
+$ rails new <APP_NAME> -m https://raw.githubusercontent.com/TheGnarCo/gnarails/master/gnarly.rb --skip-test-unit --database=postgresql
 ```
 
 A`.railsrc` is provided. If you'd like to symlink it to your home directory, it'll run `rails new` with the options to run with postgres and not including test-unit. This `.railsrc` can be personalized to include the `--template=path/to/gnarly.rb` option depending on where you locally store this repo if you'd like to use this template every time.
@@ -39,9 +38,7 @@ $ gnarails new <APP_NAME> --webpack=react
 ### Using the template
 
 ```sh
-$ git clone https://github.com/TheGnarCo/gnarails.git
-$ cd where/app/will/go
-$ rails new <APP_NAME> -m path/to/gnarly.rb --skip-test-unit --database=postgresql --webpack=react
+$ rails new <APP_NAME> -m https://raw.githubusercontent.com/TheGnarCo/gnarails/master/gnarly.rb --skip-test-unit --database=postgresql --webpack=react
 ```
 
 ## Post-Install
@@ -60,11 +57,18 @@ $ bin/yarn
 $ bin/yarn test
 ```
 
-* Generate a Personal Access Token from the gnarbot github account.
+### Setting up pronto on CI
+
+Pronto can be used to comment on pull requests for various automated checks of
+changes made in a particular diff. To complete the setup of this tool for your
+repository, you must identify a github account that pronto will comment as on
+every PR, and update the following:
+
+* Generate a Personal Access Token from the github account.
   - Settings > Developer settings > Personal access tokens > Generate new token.
   - Use the repo name for the token description.
   - Provide the repo scope.
-  - Generate token.
+  - Generate the token.
   - Store/copy the token temporarily.
 
 * Store the token value in circle.
@@ -105,10 +109,6 @@ config.before(:each, type: :system, js: true) do
   driven_by :selenium_chrome
 end
 ```
-
-## Updating gnar-style
-
-After updating the gnar-style gem, you must take care to ensure that your local rubocop file does not stray from the update made to the gem in an unintended manner. Any changes in the local rubocop file will take precedence over what is in the gnar-style gem. See the gnar-style [docs](https://github.com/TheGnarCo/gnar-style#overriding-styles) for more details.
 
 ## Running the Application
 
