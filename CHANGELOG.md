@@ -1,5 +1,9 @@
 ## Current release (in development)
 
+* Lock rails version at 5.1 release (at least 5.1.5) [#106](https://github.com/TheGnarCo/gnarails/pull/106)
+
+  [Kevin Murphy](https://github.com/kevin-j-m)
+
 ## 0.9.0 - 2018-03-26
 
 * Support all rails generator options in CLI new command [#99](https://github.com/TheGnarCo/gnarails/pull/99)
