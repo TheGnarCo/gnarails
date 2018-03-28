@@ -1,5 +1,7 @@
 ## Current release (in development)
 
+## 0.9.3 - 2018-03-28
+
 * Bundle to gather gems before generating rspec [#110](https://github.com/TheGnarCo/gnarails/pull/110)
 
   [Kevin Murphy](https://github.com/kevin-j-m)
