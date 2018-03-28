@@ -1,5 +1,7 @@
 ## Current release (in development)
 
+## 0.9.2 - 2018-03-27
+
 * Remove chromedriver-helper dependency [#108](https://github.com/TheGnarCo/gnarails/pull/108)
 
   [Kevin Murphy](https://github.com/kevin-j-m)
