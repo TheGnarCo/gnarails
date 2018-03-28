@@ -109,6 +109,7 @@ def setup_gitignore
 end
 
 def setup_testing
+  run "bundle install"
   setup_rspec
   setup_factory_bot
   setup_system_tests
