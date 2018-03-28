@@ -1,5 +1,9 @@
 ## Current release (in development)
 
+* Remove chromedriver-helper dependency [#108](https://github.com/TheGnarCo/gnarails/pull/108)
+
+  [Kevin Murphy](https://github.com/kevin-j-m)
+
 ## 0.9.1 - 2018-03-27
 
 * Lock rails version at 5.1 release (at least 5.1.5) [#106](https://github.com/TheGnarCo/gnarails/pull/106)
