@@ -318,10 +318,8 @@ def post_bundle
     setup_react if react?
     remove_dir "test"
     git :init
-
-    puts ""
-    ascii_art
-    post_install_instructions
+    format_ruby
+    completion_notification
   end
 end
 
@@ -391,6 +389,16 @@ def modify_npm_scripts
   },
     NPM_SCRIPTS
   end
+end
+
+def format_ruby
+  run "bundle exec rubocop --auto-correct"
+end
+
+def completion_notification
+  puts ""
+  ascii_art
+  post_install_instructions
 end
 
 create_gnarly_rails_app
