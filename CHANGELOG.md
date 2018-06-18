@@ -1,5 +1,9 @@
 ## Current release (in development)
 
+* Format ruby code with rubocop's auto-formatter [#112](https://github.com/TheGnarCo/gnarails/pull/112)
+
+  [Taylor Kearns](https://github.com/taylorkearns)
+
 ## 1.0.0 - 2018-03-28
 
 ## 0.9.3 - 2018-03-28
