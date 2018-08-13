@@ -5,8 +5,6 @@ def source_paths
     [File.expand_path(File.dirname(__FILE__))]
 end
 
-RUBY_VERSION = "2.5.0".freeze
-
 JS_DEPENDENCIES = [
   "babel-preset-es2015".freeze,
   "babel-preset-stage-0".freeze,
