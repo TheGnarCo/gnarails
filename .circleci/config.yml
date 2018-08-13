@@ -65,39 +65,6 @@ jobs:
           paths:
             - rails-test-app
 
-  build-rails-react:
-    docker:
-      - image: circleci/ruby:2.5.1-stretch-node-browsers
-
-    steps:
-      - checkout
-
-      # cmake is required by Rugged, a dependency of Pronto
-      - run:
-          name: Install cmake
-          command: sudo apt-get -y -qq update && sudo apt-get -y -qq install cmake
-
-      # Bundle install dependencies
-      - run:
-          name: Install Dependencies
-          command: bundle install
-
-      # Generate test app
-      - run:
-          name: Generate Test App
-          command: sh ./bin/generate-react-test-app.sh
-
-      # Move test app
-      - run:
-          name: Move Test App
-          command: mkdir rails-app && cp -r ~/project/rails-react-test-app ~/project/rails-app/
-
-      # Save to shared workspace
-      - persist_to_workspace:
-          root: rails-app
-          paths:
-            - rails-react-test-app
-
   test-rails-app:
     docker:
       - image: circleci/ruby:2.5.1-stretch-node-browsers
@@ -169,7 +136,6 @@ workflows:
     jobs:
       - unit_test
       - build-rails
-      - build-rails-react
       - test-rails-app:
           requires:
             - build-rails
