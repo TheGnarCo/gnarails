@@ -109,9 +109,6 @@ def add_ruby_version
   insert_into_file "Gemfile", after: "source 'https://rubygems.org'" do
     "\nruby \"#{RUBY_VERSION}\""
   end
-
-  copy_file "templates/.ruby-version", ".ruby-version"
-  gsub_file ".ruby-version", "__ruby_version__", RUBY_VERSION
 end
 
 def setup_scss
