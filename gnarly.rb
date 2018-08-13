@@ -5,43 +5,6 @@ def source_paths
     [File.expand_path(File.dirname(__FILE__))]
 end
 
-JS_DEPENDENCIES = [
-  "babel-preset-es2015".freeze,
-  "babel-preset-stage-0".freeze,
-  "classnames".freeze,
-  "es6-object-assign".freeze,
-  "es6-promise".freeze,
-  "history".freeze,
-  "lodash".freeze,
-  "react-entity-getter".freeze,
-  "react-redux".freeze,
-  "react-router".freeze,
-  "react-router-dom".freeze,
-  "react-router-redux@next".freeze,
-  "redux".freeze,
-  "redux-form".freeze,
-  "redux-thunk".freeze,
-  "schlepp".freeze,
-].freeze
-
-JS_DEV_DEPENDENCIES = [
-  "babel-eslint".freeze,
-  "enzyme".freeze,
-  "enzyme-adapter-react-16".freeze,
-  "eslint".freeze,
-  "eslint-config-airbnb".freeze,
-  "eslint-plugin-import".freeze,
-  "eslint-plugin-jsx-a11y@^5.1.1".freeze,
-  "eslint-plugin-react".freeze,
-  "expect".freeze,
-  "jsdom".freeze,
-  "mocha".freeze,
-  "nock".freeze,
-  "react-dom".freeze,
-  "react-test-renderer".freeze,
-  "redux-mock-store".freeze,
-].freeze
-
 def create_gnarly_rails_app
   # This is a really unfortunate, but necessary, line of code that resets the
   # cached Gemfile location so the generated application's Gemfile is used
@@ -64,7 +27,6 @@ def create_gnarly_rails_app
     setup_analysis
     setup_environments
     setup_readme
-    setup_react if react?
     remove_dir "test"
     git :init
     format_ruby
@@ -295,11 +257,7 @@ def setup_docker
   copy_file "templates/Dockerfile", "Dockerfile"
   gsub_file "Dockerfile", "__ruby_version__", RUBY_VERSION
 
-  if react?
-    setup_docker_react
-  else
-    setup_docker_standard
-  end
+  setup_docker_standard
 end
 
 def setup_procfile
@@ -311,22 +269,10 @@ def setup_docker_standard
   copy_file "templates/docker-compose.yml/docker-compose-standard.yml", "docker-compose.yml"
 end
 
-def setup_docker_react
-  copy_file "templates/Dockerfile-assets", "Dockerfile-assets"
-  gsub_file "Dockerfile-assets", "__ruby_version__", RUBY_VERSION
-  copy_file "templates/.env.docker/.env.docker-webpack", ".env.docker"
-  copy_file "templates/.env.docker-assets", ".env.docker-assets"
-  copy_file "templates/docker-compose.yml/docker-compose-webpack.yml", "docker-compose.yml"
-end
-
 def setup_readme
   remove_file "README.md"
   copy_file "templates/README.md", "README.md"
   gsub_file "README.md", "__application_name__", app_name
-end
-
-def react?
-  options[:webpack] == "react"
 end
 
 def ascii_art
@@ -349,52 +295,6 @@ def post_install_instructions
   puts "* Install ChromeDriver for default headless acceptance tests: brew install chromedriver"
   puts "* Follow the post-install instructions to set up circle to allow gnarbot to comment on PRs."
   puts "  * https://github.com/TheGnarCo/gnarails#post-install"
-end
-
-def setup_react
-  install_js_deps
-  add_js_files
-  modify_js_files
-  modify_npm_scripts
-end
-
-def install_js_deps
-  puts "Installing Gnar react packages"
-  run "yarn add #{JS_DEPENDENCIES.join(' ')}"
-  run "yarn add --dev #{JS_DEV_DEPENDENCIES.join(' ')}"
-end
-
-def add_js_files
-  directory "templates/react/js", "app/javascript"
-  directory "templates/react/views", "app/views"
-  copy_file "templates/react/layout.html.erb", "app/views/layouts/application.html.erb", force: true
-  copy_file "templates/react/rails_routes.rb", "config/routes.rb", force: true
-  copy_file "templates/react/controllers/home_controller.rb", "app/controllers/home_controller.rb"
-  copy_file "templates/react/.babelrc", ".babelrc", force: true
-  copy_file "templates/react/.eslintrc.js", ".eslintrc.js", force: true
-end
-
-def modify_js_files
-  gsub_file "app/views/layouts/application.html.erb",
-    "placeholder_application_title",
-    app_name.tr("-", "_").titleize
-  gsub_file "app/javascript/app_constants/index.js",
-    "  APP_NAME: 'CHANGE_ME',",
-    "  APP_NAME: '#{app_name}',"
-  remove_file "app/javascript/packs/application.js"
-end
-
-def modify_npm_scripts
-  insert_into_file "package.json", before: "  \"dependencies\": {\n" do
-    <<-NPM_SCRIPTS
-  "scripts": {
-    "start": "./bin/webpack-dev-server",
-    "mocha": "NODE_PATH=./app/javascript mocha --compilers js:babel-register --require babel-polyfill --require app/javascript/test/.setup.js --recursive './app/javascript/**/*.tests.js*'",
-    "lint": "eslint app/javascript",
-    "test": "npm run lint && npm run mocha"
-  },
-    NPM_SCRIPTS
-  end
 end
 
 def format_ruby
