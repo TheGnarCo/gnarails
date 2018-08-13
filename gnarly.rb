@@ -123,7 +123,7 @@ def setup_rspec
   remove_file ".rspec"
   copy_file "templates/.rspec", ".rspec"
   gsub_file "spec/rails_helper.rb",
-    "# Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }",
+    /# Dir\[Rails\.root\.join.*/,
     "Dir[Rails.root.join(\"spec/support/**/*.rb\")].each { |f| require f }"
 end
 
