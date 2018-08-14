@@ -25,12 +25,10 @@ jobs:
       # Bundle install dependencies
       - run:
           name: install dependencies
-          command: bundle install --path vendor/bundle
+          command: bundle install
 
       # Store bundle cache
       - save_cache:
-          paths:
-            - vendor/bundle
           key: gnarails-{{ checksum "gnarails.gemspec" }}
 
       # Tests
@@ -65,12 +63,10 @@ jobs:
       # Bundle install dependencies
       - run:
           name: Install Dependencies
-          command: bundle install --path vendor/bundle
+          command: bundle install
 
       # Store bundle cache
       - save_cache:
-          paths:
-            - vendor/bundle
           key: gnarails-build-rails-{{ checksum "gnarails.gemspec" }}
 
       # Generate test app
