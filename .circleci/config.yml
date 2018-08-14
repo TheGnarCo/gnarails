@@ -27,10 +27,6 @@ jobs:
           name: install dependencies
           command: bundle install
 
-      # Store bundle cache
-      - save_cache:
-          key: gnarails-{{ checksum "gnarails.gemspec" }}
-
       # Tests
       - run:
           name: RSpec
@@ -64,10 +60,6 @@ jobs:
       - run:
           name: Install Dependencies
           command: bundle install
-
-      # Store bundle cache
-      - save_cache:
-          key: gnarails-build-rails-{{ checksum "gnarails.gemspec" }}
 
       # Generate test app
       - run:
@@ -107,13 +99,7 @@ jobs:
       # Bundle install dependencies
       - run:
           name: Install Dependencies
-          command: bundle install --path vendor/bundle
-
-      # Store bundle cache
-      - save_cache:
-          paths:
-            - vendor/bundle
-          key: gnarails-build-rails-react-{{ checksum "gnarails.gemspec" }}
+          command: bundle install
 
       # Generate test app
       - run:
@@ -168,13 +154,7 @@ jobs:
       # Bundle install dependencies
       - run:
           name: install dependencies
-          command: bundle install --path vendor/bundle
-
-      # Store bundle cache
-      - save_cache:
-          paths:
-            - vendor/bundle
-          key: gnarails-test-rails-app-{{ checksum "Gemfile.lock" }}
+          command: bundle install
 
       # Database setup
       - run:
