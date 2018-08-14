@@ -50,16 +50,19 @@ def create_gnarly_rails_app
   # instead of the generators Gemfile.
   ENV["BUNDLE_GEMFILE"] = nil
 
+  # Prevent spring cache when generating application
+  ENV["DISABLE_SPRING"] = "true"
+
   add_gems
 
   run "bundle install"
 
   after_bundle do
+    setup_testing
     setup_database
     add_ruby_version
     setup_scss
     setup_gitignore
-    setup_testing
     setup_analysis
     setup_environments
     setup_readme
@@ -88,7 +91,7 @@ def add_gems
     gem 'pronto-scss', require: false
     gem 'pry-rails'
     gem 'rspec-its'
-    gem 'rspec-rails'
+    gem 'rspec-rails', '~> 3.7'
     gem 'scss_lint', require: false
     gem 'selenium-webdriver'
     gem 'shoulda-matchers'
