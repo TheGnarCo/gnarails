@@ -232,13 +232,13 @@ end
 
 def setup_pronto
   copy_file "templates/.pronto.yml", ".pronto.yml"
-  copy_file "templates/script/ci_pronto", "script/ci_pronto"
-  run "chmod +x script/ci_pronto"
+  copy_file "templates/bin/ci_pronto", "bin/ci_pronto"
+  run "chmod +x bin/ci_pronto"
 end
 
 def setup_brakeman
-  copy_file "templates/script/brakeman", "script/brakeman"
-  run "chmod +x script/brakeman"
+  copy_file "templates/bin/brakeman", "bin/brakeman"
+  run "chmod +x bin/brakeman"
 end
 
 def setup_simplecov

@@ -196,12 +196,12 @@ jobs:
           command: bundle exec bundle-audit update && bundle exec bundle-audit check
       - run:
           name: Brakeman
-          command: ./script/brakeman
+          command: ./bin/brakeman
 
       # Pronto
       - run:
           name: Pronto
-          command: ./script/ci_pronto
+          command: ./bin/ci_pronto
 
       # Save Brakeman
       - store_artifacts:
