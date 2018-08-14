@@ -6,7 +6,7 @@ version: 2
 jobs:
   unit_test:
     docker:
-      - image: circleci/ruby:2.5.0-stretch-node-browsers
+      - image: circleci/ruby:2.5.1-stretch-node-browsers
         environment:
           RAILS_ENV: test
     steps:
@@ -34,7 +34,7 @@ jobs:
 
   build-rails:
     docker:
-      - image: circleci/ruby:2.5.0-stretch-node-browsers
+      - image: circleci/ruby:2.5.1-stretch-node-browsers
 
     steps:
       - checkout
@@ -67,7 +67,7 @@ jobs:
 
   build-rails-react:
     docker:
-      - image: circleci/ruby:2.5.0-stretch-node-browsers
+      - image: circleci/ruby:2.5.1-stretch-node-browsers
 
     steps:
       - checkout
@@ -100,7 +100,7 @@ jobs:
 
   test-rails-app:
     docker:
-      - image: circleci/ruby:2.5.0-stretch-node-browsers
+      - image: circleci/ruby:2.5.1-stretch-node-browsers
         environment:
           RAILS_ENV: test
           PG_HOST: localhost
