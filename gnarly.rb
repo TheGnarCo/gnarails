@@ -45,20 +45,6 @@ JS_DEV_DEPENDENCIES = [
 ].freeze
 
 def create_gnarly_rails_app
-  # This is a really unfortunate, but necessary line of code that resets the
-  # cached Gemfile location so the generated application's Gemfile is used
-  # instead of the generators Gemfile.
-  ENV["BUNDLE_GEMFILE"] = nil
-
-  add_gems
-  setup_database
-  add_ruby_version
-  setup_scss
-  setup_gitignore
-  setup_testing
-  setup_analysis
-  setup_environments
-  setup_readme
   post_bundle
 end
 
@@ -114,7 +100,6 @@ def setup_gitignore
 end
 
 def setup_testing
-  run "bundle install"
   setup_rspec
   setup_factory_bot
   setup_system_tests
@@ -319,7 +304,24 @@ def react?
 end
 
 def post_bundle
+  # This is a really unfortunate, but necessary line of code that resets the
+  # cached Gemfile location so the generated application's Gemfile is used
+  # instead of the generators Gemfile.
+  ENV["BUNDLE_GEMFILE"] = nil
+
+  add_gems
+
+  run "bundle install"
+
   after_bundle do
+    setup_database
+    add_ruby_version
+    setup_scss
+    setup_gitignore
+    setup_testing
+    setup_analysis
+    setup_environments
+    setup_readme
     setup_react if react?
     remove_dir "test"
     git :init
