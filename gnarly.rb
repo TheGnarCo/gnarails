@@ -45,16 +45,33 @@ JS_DEV_DEPENDENCIES = [
 ].freeze
 
 def create_gnarly_rails_app
+  # This is a really unfortunate, but necessary line of code that resets the
+  # cached Gemfile location so the generated application's Gemfile is used
+  # instead of the generators Gemfile.
+  ENV["BUNDLE_GEMFILE"] = nil
+
+  # Prevent spring cache when generating application
+  ENV["DISABLE_SPRING"] = "true"
+
   add_gems
-  setup_database
-  add_ruby_version
-  setup_scss
-  setup_gitignore
-  setup_testing
-  setup_analysis
-  setup_environments
-  setup_readme
-  post_bundle
+
+  run "bundle install"
+
+  after_bundle do
+    setup_testing
+    setup_database
+    add_ruby_version
+    setup_scss
+    setup_gitignore
+    setup_analysis
+    setup_environments
+    setup_readme
+    setup_react if react?
+    remove_dir "test"
+    git :init
+    format_ruby
+    completion_notification
+  end
 end
 
 def add_gems
@@ -74,7 +91,7 @@ def add_gems
     gem 'pronto-scss', require: false
     gem 'pry-rails'
     gem 'rspec-its'
-    gem 'rspec-rails'
+    gem 'rspec-rails', '~> 3.7'
     gem 'scss_lint', require: false
     gem 'selenium-webdriver'
     gem 'shoulda-matchers'
@@ -109,7 +126,6 @@ def setup_gitignore
 end
 
 def setup_testing
-  run "bundle install"
   setup_rspec
   setup_factory_bot
   setup_system_tests
@@ -311,16 +327,6 @@ end
 
 def react?
   options[:webpack] == "react"
-end
-
-def post_bundle
-  after_bundle do
-    setup_react if react?
-    remove_dir "test"
-    git :init
-    format_ruby
-    completion_notification
-  end
 end
 
 def ascii_art
