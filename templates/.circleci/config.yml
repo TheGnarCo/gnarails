@@ -64,3 +64,8 @@ jobs:
       - store_artifacts:
           path: coverage
           destination: coverage
+
+      # Save Capybara Screenshots
+      - store_artifacts:
+          path: tmp/screenshots
+          destination: capybara/screenshots
