@@ -285,7 +285,8 @@ def post_install_instructions
   puts "\n\nNEXT STEPS"
   puts "=========="
   puts "* Install Google Chrome for acceptance tests"
-  puts "* Install ChromeDriver for default headless acceptance tests: brew install chromedriver"
+  puts "* Ensure you have Homebrew Cask installed: brew tap homebrew/cask"
+  puts "* Install ChromeDriver for default headless acceptance tests: brew cask install chromedriver"
   puts "* Follow the post-install instructions to set up circle to allow gnarbot to comment on PRs."
   puts "  * https://github.com/TheGnarCo/gnarails#post-install"
 end

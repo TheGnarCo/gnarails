@@ -20,7 +20,8 @@ To run acceptance tests chromedriver is required.
 If using macOS and homebrew, you can install chromedriver with the following
 command:
 ```sh
-$ brew install chromedriver
+$ brew tap homebrew/cask
+$ brew cask install chromedriver
 ```
 
 To run the full test suite:
