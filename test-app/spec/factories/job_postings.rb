@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :job_posting do
-    title "Software Developer"
+    title { "Software Developer" }
   end
 end
