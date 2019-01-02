@@ -2,7 +2,7 @@
 #
 # Script for running Brakeman tests
 # Brakeman is a security scanner https://github.com/presidentbeef/brakeman.
-gem install --no-rdoc --no-ri brakeman
+gem install brakeman --no-document
 
 brakeman --exit-on-warn --separate-models -o tmp/brakeman.html -o tmp/brakeman.text .
 brakeman_exit_code=$?
