@@ -275,6 +275,7 @@ def setup_environments
   setup_dotenv
   setup_ci
   setup_docker
+  setup_procfile
 end
 
 def setup_dotenv
@@ -299,6 +300,10 @@ def setup_docker
   else
     setup_docker_standard
   end
+end
+
+def setup_procfile
+  copy_file "templates/Procfile", "Procfile"
 end
 
 def setup_docker_standard
