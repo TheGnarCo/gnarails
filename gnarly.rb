@@ -21,7 +21,6 @@ def create_gnarly_rails_app
   after_bundle do
     setup_testing
     setup_database
-    add_ruby_version
     setup_scss
     setup_gitignore
     setup_analysis
@@ -65,12 +64,6 @@ def setup_database
   gsub_file "config/database.yml", "__application_name__", app_name
 
   gsub_file "Gemfile", /.*sqlite.*\n/, ""
-end
-
-def add_ruby_version
-  insert_into_file "Gemfile", after: "source 'https://rubygems.org'" do
-    "\nruby \"#{RUBY_VERSION}\""
-  end
 end
 
 def setup_scss
