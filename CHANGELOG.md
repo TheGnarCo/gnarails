@@ -1,5 +1,7 @@
 ## Current release (in development)
 
+## 2.0.0 - 2019-03-01
+
 * Support Ruby 2.6.1 [#134](https://github.com/TheGnarCo/gnarails/pull/134)
 
   [Kevin Murphy](https://github.com/kevin-j-m)
