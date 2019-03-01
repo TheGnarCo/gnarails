@@ -1,5 +1,49 @@
 ## Current release (in development)
 
+* Support Ruby 2.6.1 [#134](https://github.com/TheGnarCo/gnarails/pull/134)
+
+  [Kevin Murphy](https://github.com/kevin-j-m)
+
+* Install brakeman without `--rdoc` or `--ri` [#130](https://github.com/TheGnarCo/gnarails/pull/130)
+
+  [Kevin Murphy](https://github.com/kevin-j-m)
+
+* Add Starting Procfile [#129](https://github.com/TheGnarCo/gnarails/pull/129)
+
+  [Blake Williams](https://github.com/BlakeWilliams)
+
+* Set Pronto to report on Github PRs with the Review Formatter [#126](https://github.com/TheGnarCo/gnarails/pull/126)
+
+  [Kevin Murphy](https://github.com/kevin-j-m)
+
+* Store Capybara screenshot failures as Circle CI Artifact [#123](https://github.com/TheGnarCo/gnarails/pull/123)
+
+  [Kevin Murphy](https://github.com/kevin-j-m)
+
+* Support Ruby 2.5.1 [#122](https://github.com/TheGnarCo/gnarails/pull/122)
+
+  [Blake Williams](https://github.com/BlakeWilliams)
+
+* Rename `/script` directory to instead use `/bin` for scripts [#121](https://github.com/TheGnarCo/gnarails/pull/121), [#125](https://github.com/TheGnarCo/gnarails/pull/125)
+
+  [Blake Williams](https://github.com/BlakeWilliams)
+
+* Ensure use of created application's Gemfile [#120](https://github.com/TheGnarCo/gnarails/pull/120)
+
+  [Blake Williams](https://github.com/BlakeWilliams)
+
+* Support Rails 5.2.1 [#118](https://github.com/TheGnarCo/gnarails/pull/118)
+
+  [Blake Williams](https://github.com/BlakeWilliams)
+
+* Remove React Support [#117](https://github.com/TheGnarCo/gnarails/pull/117)
+
+  [Blake Williams](https://github.com/BlakeWilliams)
+
+* Use ruby's RUBY_VERSION [#115](https://github.com/TheGnarCo/gnarails/pull/115)
+
+  [Blake Williams](https://github.com/BlakeWilliams)
+
 * Format ruby code with rubocop's auto-formatter [#112](https://github.com/TheGnarCo/gnarails/pull/112)
 
   [Taylor Kearns](https://github.com/taylorkearns)
