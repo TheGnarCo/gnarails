@@ -48,6 +48,7 @@ def add_gems
     gem 'pronto-brakeman', require: false
     gem 'pronto-rubocop', require: false
     gem 'pronto-scss', require: false
+    gem 'pry-byebug'
     gem 'pry-rails'
     gem 'rspec-its'
     gem 'rspec-rails', '~> 3.7'
