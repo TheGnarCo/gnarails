@@ -42,6 +42,7 @@ def add_gems
     gem 'dotenv-rails'
     gem 'factory_bot_rails'
     gem 'gnar-style', require: false
+    gem 'launchy'
     gem 'lol_dba'
     gem 'okcomputer'
     gem 'pronto'
