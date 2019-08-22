@@ -84,6 +84,7 @@ def setup_testing
   setup_shoulda
   setup_bullet
   limit_test_logging
+  remove_chromedriver_helper
 end
 
 def setup_rspec
@@ -186,6 +187,10 @@ def limit_test_logging
   end
     TEST_LOGGING
   end
+end
+
+def remove_chromedriver_helper
+  gsub_file "Gemfile", /(\s+#.*\s+)gem 'chromedriver-helper'/, ""
 end
 
 def setup_analysis
