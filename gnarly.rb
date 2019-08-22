@@ -84,6 +84,7 @@ def setup_testing
   setup_shoulda
   setup_bullet
   limit_test_logging
+  remove_chromedriver_helper
 end
 
 def setup_rspec
@@ -188,6 +189,10 @@ def limit_test_logging
   end
 end
 
+def remove_chromedriver_helper
+  gsub_file "Gemfile", /(\s+#.*\s+)gem 'chromedriver-helper'/, ""
+end
+
 def setup_analysis
   setup_linting
   setup_pronto
@@ -233,6 +238,7 @@ def setup_environments
   setup_ci
   setup_docker
   setup_procfile
+  configure_i18n
 end
 
 def setup_dotenv
@@ -268,6 +274,19 @@ def setup_readme
   remove_file "README.md"
   copy_file "templates/README.md", "README.md"
   gsub_file "README.md", "__application_name__", app_name
+end
+
+def configure_i18n
+  gsub_file(
+    "config/environments/test.rb",
+    "# config.action_view.raise_on_missing_translations = true",
+    "config.action_view.raise_on_missing_translations = true",
+  )
+  gsub_file(
+    "config/environments/development.rb",
+    "# config.action_view.raise_on_missing_translations = true",
+    "config.action_view.raise_on_missing_translations = true",
+  )
 end
 
 def ascii_art
