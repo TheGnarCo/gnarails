@@ -238,7 +238,7 @@ def setup_environments
   setup_ci
   setup_docker
   setup_procfile
-  setup_i18n
+  configure_i18n
 end
 
 def setup_dotenv
@@ -276,7 +276,7 @@ def setup_readme
   gsub_file "README.md", "__application_name__", app_name
 end
 
-def setup_i18n
+def configure_i18n
   gsub_file(
     "config/environments/test.rb",
     "# config.action_view.raise_on_missing_translations = true",
