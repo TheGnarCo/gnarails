@@ -4,6 +4,10 @@
 
   [Reese Williams](https://github.com/reese)
 
+* Upgrade to Rails 6 [#146](https://github.com/TheGnarCo/gnarails/pull/146)
+
+  [Reese Williams](https://github.com/reese)
+
 ## 2.0.0 - 2019-03-01
 
 * Support Ruby 2.6.1 [#134](https://github.com/TheGnarCo/gnarails/pull/134)
