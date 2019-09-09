@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
-git_source(:github) {|repo_name| "https://github.com/TheGnarCo/#{repo_name}" }
-gem 'webpacker', '=3.0'
+git_source(:github) { |repo_name| "https://github.com/TheGnarCo/#{repo_name}" }
 
 group :development do
   gem 'listen'
