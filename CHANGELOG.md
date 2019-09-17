@@ -1,5 +1,9 @@
 ## Current release (in development)
 
+* Downgrade to Ruby 2.6.3 [#148](https://github.com/TheGnarCo/gnarails/pull/148)
+
+  [Kevin Murphy](https://github.com/kevin-j-m)
+
 * Support Ruby 2.6.4 [#147](https://github.com/TheGnarCo/gnarails/pull/147)
 
   [Reese Williams](https://github.com/reese)
