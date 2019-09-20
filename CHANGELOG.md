@@ -1,5 +1,7 @@
 ## Current release (in development)
 
+## 3.0.0 - 2019-09-20
+
 * Downgrade to Ruby 2.6.3 [#148](https://github.com/TheGnarCo/gnarails/pull/148)
 
   [Kevin Murphy](https://github.com/kevin-j-m)
