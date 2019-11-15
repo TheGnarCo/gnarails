@@ -1,5 +1,9 @@
 ## Current release (in development)
 
+* Upgrade to Ruby 2.6.5 [#148](https://github.com/TheGnarCo/gnarails/pull/149)
+
+  [Dan Frenette](https://github.com/danfrenette)
+
 ## 3.0.0 - 2019-09-20
 
 * Downgrade to Ruby 2.6.3 [#148](https://github.com/TheGnarCo/gnarails/pull/148)
