@@ -28,6 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "gnar-style"
   spec.add_development_dependency "pronto"
   spec.add_development_dependency "pronto-rubocop"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
 end
