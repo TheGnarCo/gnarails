@@ -3,7 +3,6 @@ bundle exec exe/gnarails new rails-test-app
 
 mkdir rails-test-app/app/views/job_postings
 mkdir rails-test-app/db/migrate
-mkdir rails-test-app/spec
 mkdir rails-test-app/spec/factories
 mkdir rails-test-app/spec/models
 mkdir rails-test-app/spec/system
