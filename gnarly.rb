@@ -16,7 +16,7 @@ def create_gnarly_rails_app
 
   add_gems
 
-  run "bundle install"
+  run "bundle install --gemfile='./Gemfile'"
 
   after_bundle do
     setup_testing
