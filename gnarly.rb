@@ -38,7 +38,6 @@ def add_gems
     gem 'axe-matchers'
     gem 'bullet'
     gem 'bundler-audit'
-    gem 'capybara'
     gem 'dotenv-rails'
     gem 'factory_bot_rails'
     gem 'gnar-style', require: false
@@ -54,7 +53,6 @@ def add_gems
     gem 'rspec-its'
     gem 'rspec-rails', '~> 3.7'
     gem 'scss_lint', require: false
-    gem 'selenium-webdriver'
     gem 'shoulda-matchers'
     gem 'simplecov', require: false
   end
