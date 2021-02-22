@@ -245,8 +245,16 @@ end
 
 def setup_ci
   copy_file "templates/.circleci/config.yml", ".circleci/config.yml"
-  gsub_file ".circleci/config.yml", "__ruby_version__", RUBY_VERSION
+  gsub_file ".circleci/config.yml", "__ruby_image_suffix__", ruby_image_suffix
   gsub_file ".circleci/config.yml", "__application_name__", app_name
+end
+
+def ruby_image_suffix
+  if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.7.0")
+    "#{RUBY_VERSION}-stretch-node-browsers"
+  else
+    "#{RUBY_VERSION}-buster-node-browsers"
+  end
 end
 
 def setup_docker
