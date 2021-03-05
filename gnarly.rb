@@ -41,7 +41,7 @@ def add_gems
     gem 'capybara'
     gem 'dotenv-rails'
     gem 'factory_bot_rails'
-    gem 'gnar-style', require: false
+    gem 'gnar-style', '0.12.0', require: false
     gem 'launchy'
     gem 'lol_dba'
     gem 'okcomputer'
