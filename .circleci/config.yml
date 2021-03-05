@@ -78,7 +78,7 @@ jobs:
           PG_HOST: localhost
           PG_USER: ubuntu
           DATABASE_URL: "postgres://ubuntu@localhost:5432/rails-test-app-test"
-      - image: circleci/postgres:9.6.5
+      - image: circleci/postgres:13.0
         environment:
           POSTGRES_USER: ubuntu
           POSTGRES_DB: rails-test-app-test
