@@ -166,10 +166,14 @@ module Gnarails
         be able to when generating a new rails app.
       LONGDESC
       def new(name)
-        Kernel.system "rails new #{name} #{cli_options(options)}"
+        Kernel.system command(name, options)
       end
 
       no_tasks do
+        def command(name, options)
+          "rails new #{name} #{cli_options(options)}"
+        end
+
         def cli_options(options)
           options_string = "-m #{Gnarails.template_file} --skip-test-unit --database=postgresql"
           options.each_with_object(options_string) do |(k, v), str|
