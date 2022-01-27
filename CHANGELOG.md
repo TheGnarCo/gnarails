@@ -4,6 +4,12 @@
 
   [Dan Frenette](https://github.com/danfrenette)
 
+## 3.1.0 - 2021-01-27
+
+* Update axe-core gems for accessibility testing [#163](https://github.com/TheGnarCo/gnarails/pull/163)
+
+  [Steve Zelaznik](https://github.com/zelaznik)
+
 ## 3.0.0 - 2019-09-20
 
 * Downgrade to Ruby 2.6.3 [#148](https://github.com/TheGnarCo/gnarails/pull/148)
