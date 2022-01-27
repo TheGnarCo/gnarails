@@ -5,7 +5,7 @@ RSpec.feature "Viewing all job postings", type: :system do
     create_list :job_posting, 1
     visit job_postings_path
 
-    expect(page).to be_accessible
+    expect(page).to be_axe_clean
   end
 
   scenario "N+1 query proteection" do
