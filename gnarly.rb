@@ -35,27 +35,27 @@ end
 
 def add_gems
   gem_group :development, :test do
-    gem 'axe-core-capybara'
-    gem 'axe-core-rspec'
-    gem 'bullet'
-    gem 'bundler-audit'
-    gem 'dotenv-rails'
-    gem 'factory_bot_rails'
-    gem 'gnar-style', require: false
-    gem 'launchy'
-    gem 'lol_dba'
-    gem 'okcomputer'
-    gem 'pronto'
-    gem 'pronto-brakeman', require: false
-    gem 'pronto-rubocop', require: false
-    gem 'pronto-scss', require: false
-    gem 'pry-byebug'
-    gem 'pry-rails'
-    gem 'rspec-its'
-    gem 'rspec-rails', '~> 3.7'
-    gem 'scss_lint', require: false
-    gem 'shoulda-matchers'
-    gem 'simplecov', require: false
+    gem "axe-core-capybara"
+    gem "axe-core-rspec"
+    gem "bullet"
+    gem "bundler-audit"
+    gem "dotenv-rails"
+    gem "factory_bot_rails"
+    gem "gnar-style", require: false
+    gem "launchy"
+    gem "lol_dba"
+    gem "okcomputer"
+    gem "pronto"
+    gem "pronto-brakeman", require: false
+    gem "pronto-rubocop", require: false
+    gem "pronto-scss", require: false
+    gem "pry-byebug"
+    gem "pry-rails"
+    gem "rspec-its"
+    gem "rspec-rails", "~> 3.7"
+    gem "scss_lint", require: false
+    gem "shoulda-matchers"
+    gem "simplecov", require: false
   end
 end
 
@@ -80,6 +80,7 @@ def setup_testing
   setup_rspec
   setup_factory_bot
   setup_system_tests
+  setup_accessiblity_matchers
   setup_shoulda
   setup_bullet
   limit_test_logging
@@ -123,6 +124,18 @@ end
 def setup_shoulda
   append_to_file "spec/rails_helper.rb" do
     shoulda_rails_helper_text
+  end
+end
+
+def setup_accessiblity_matchers
+  insert_into_file "spec/rails_helper.rb", after: "Rails is not loaded until this point!\n" do
+    <<~RUBY
+    module AccessibilityMatchers
+      def be_accessible
+        be_axe_clean
+      end
+    end
+    RUBY
   end
 end
 
