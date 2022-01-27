@@ -5,7 +5,7 @@ RSpec.feature "Viewing all job postings", type: :system do
     create_list :job_posting, 1
     visit job_postings_path
 
-    expect(page).to be_accessible
+    expect(page).to be_axe_clean
   end
 
   scenario "N+1 query proteection" do
@@ -25,10 +25,6 @@ RSpec.feature "Viewing all job postings", type: :system do
     posting = create :job_posting
     visit job_postings_path
 
-    expect(has_job_posting?(posting)).to be true
-  end
-
-  def has_job_posting?(posting)
     within(".job-posting-#{posting.id}") do
       expect(page).to have_css("td.posting-title", text: posting.title)
     end

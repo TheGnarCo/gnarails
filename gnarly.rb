@@ -2,7 +2,7 @@
 # to look up files
 def source_paths
   Array(super) +
-    [File.expand_path(File.dirname(__FILE__))]
+    [__dir__]
 end
 
 def create_gnarly_rails_app
@@ -35,26 +35,27 @@ end
 
 def add_gems
   gem_group :development, :test do
-    gem 'axe-matchers'
-    gem 'bullet'
-    gem 'bundler-audit'
-    gem 'dotenv-rails'
-    gem 'factory_bot_rails'
-    gem 'gnar-style', require: false
-    gem 'launchy'
-    gem 'lol_dba'
-    gem 'okcomputer'
-    gem 'pronto'
-    gem 'pronto-brakeman', require: false
-    gem 'pronto-rubocop', require: false
-    gem 'pronto-scss', require: false
-    gem 'pry-byebug'
-    gem 'pry-rails'
-    gem 'rspec-its'
-    gem 'rspec-rails', '~> 3.7'
-    gem 'scss_lint', require: false
-    gem 'shoulda-matchers'
-    gem 'simplecov', require: false
+    gem "axe-core-capybara"
+    gem "axe-core-rspec"
+    gem "bullet"
+    gem "bundler-audit"
+    gem "dotenv-rails"
+    gem "factory_bot_rails"
+    gem "gnar-style", require: false
+    gem "launchy"
+    gem "lol_dba"
+    gem "okcomputer"
+    gem "pronto"
+    gem "pronto-brakeman", require: false
+    gem "pronto-rubocop", require: false
+    gem "pronto-scss", require: false
+    gem "pry-byebug"
+    gem "pry-rails"
+    gem "rspec-its"
+    gem "rspec-rails", "~> 3.7"
+    gem "scss_lint", require: false
+    gem "shoulda-matchers"
+    gem "simplecov", require: false
   end
 end
 
@@ -113,7 +114,8 @@ end
 def system_tests_rails_helper_text
   <<~SYSTEM_TESTS
     require "capybara/rails"
-    require "axe/rspec"
+    require "axe-rspec"
+    require "axe-capybara"
     require "selenium/webdriver"
   SYSTEM_TESTS
 end
