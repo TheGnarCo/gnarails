@@ -2,7 +2,7 @@
 # to look up files
 def source_paths
   Array(super) +
-    [File.expand_path(File.dirname(__FILE__))]
+    [__dir__]
 end
 
 def create_gnarly_rails_app
@@ -130,11 +130,11 @@ end
 def setup_accessiblity_matchers
   insert_into_file "spec/rails_helper.rb", after: "Rails is not loaded until this point!\n" do
     <<~RUBY
-    module AccessibilityMatchers
-      def be_accessible
-        be_axe_clean
+      module AccessibilityMatchers
+        def be_accessible
+          be_axe_clean
+        end
       end
-    end
     RUBY
   end
 end
