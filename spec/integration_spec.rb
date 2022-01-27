@@ -1,4 +1,5 @@
 require "spec_helper"
+require "English"
 
 RSpec.describe "Sample App Integration Testing" do
   context "generating a sample application", unless: ENV["CI"] do
@@ -14,7 +15,7 @@ RSpec.describe "Sample App Integration Testing" do
       Bundler.with_clean_env do
         Dir.chdir("rails-test-app") do
           `bundle exec rspec`
-          test_app_result = $?.success?
+          test_app_result = $CHILD_STATUS.success?
 
           expect(test_app_result).to be true
         end
