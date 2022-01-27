@@ -35,7 +35,8 @@ end
 
 def add_gems
   gem_group :development, :test do
-    gem 'axe-matchers'
+    gem 'axe-core-capybara'
+    gem 'axe-core-rspec'
     gem 'bullet'
     gem 'bundler-audit'
     gem 'dotenv-rails'
@@ -113,7 +114,8 @@ end
 def system_tests_rails_helper_text
   <<~SYSTEM_TESTS
     require "capybara/rails"
-    require "axe/rspec"
+    require "axe-rspec"
+    require "axe-capybara"
     require "selenium/webdriver"
   SYSTEM_TESTS
 end
