@@ -182,9 +182,10 @@ module Gnarails
         end
 
         def cli_option(key, value)
-          if value == false
+          case value
+          when false
             ""
-          elsif value == true
+          when true
             " --#{key}"
           else
             " --#{key}=#{value}"
