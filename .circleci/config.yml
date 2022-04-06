@@ -6,7 +6,7 @@ version: 2
 jobs:
   unit_test:
     docker:
-      - image: circleci/ruby:2.6.5-stretch-node-browsers
+      - image: circleci/ruby:2.7.4-buster-node-browsers
         environment:
           RAILS_ENV: test
     steps:
