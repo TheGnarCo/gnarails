@@ -21,7 +21,8 @@ def create_gnarly_rails_app
   after_bundle do
     setup_testing
     setup_database
-    setup_scss
+    setup_css
+    setup_js
     setup_gitignore
     setup_analysis
     setup_environments
@@ -52,8 +53,8 @@ def add_gems
     gem "pry-byebug"
     gem "pry-rails"
     gem "rspec-its"
-    gem "rspec-rails", "~> 3.7"
-    gem "scss_lint", require: false
+    gem "rspec-rails", "~> 4"
+    gem "rubocop-rspec", require: false
     gem "shoulda-matchers"
     gem "simplecov", require: false
   end
@@ -63,12 +64,16 @@ def setup_database
   remove_file "config/database.yml"
   copy_file "templates/database.yml", "config/database.yml"
   gsub_file "config/database.yml", "__application_name__", app_name
-
   gsub_file "Gemfile", /.*sqlite.*\n/, ""
 end
 
-def setup_scss
-  run "mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss"
+def setup_css
+end
+
+def setup_js
+  remove_file "esbuild.config.js"
+  copy_file "templates/esbuild.config.js", "esbuild.config.js"
+  run "npm set-script build 'node esbuild.config.js'"
 end
 
 def setup_gitignore
@@ -197,7 +202,6 @@ end
 
 def setup_linting
   copy_file "templates/.rubocop.yml", ".rubocop.yml"
-  copy_file "templates/.scss-lint.yml", ".scss-lint.yml"
 end
 
 def setup_pronto
