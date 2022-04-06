@@ -308,7 +308,7 @@ def post_install_instructions
 end
 
 def format_ruby
-  run "bundle exec rubocop --auto-correct"
+  run "bundle exec rubocop -A"
 end
 
 def completion_notification
