@@ -1,0 +1,65 @@
+name: Test Rails App
+on: [push]
+
+jobs:
+  test-rails-app:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_PASSWORD: password
+        ports: ["5432:5432"]
+        options:
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.12
+        with:
+          github-api-token: ${{ secrets.GITHUB_TOKEN }}
+          cmake-version: '3.16.x'
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Bundle install
+        run: bundle install
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - run: corepack enable
+
+      - name: Generate Test App
+        run: bin/generate-test-app.sh
+
+      - name: Install packages
+        working-directory: './rails-test-app'
+        run: |
+          yarn install --pure-lockfile
+
+      - name: Generate Assets
+        working-directory: './rails-test-app'
+        run: bin/rails assets:precompile
+
+      - name: Setup DB
+        working-directory: './rails-test-app'
+        env:
+          DATABASE_PASSWORD: password
+        run: bin/setup
+
+      - name: Run tests
+        working-directory: './rails-test-app'
+        env:
+          DATABASE_PASSWORD: password
+        run: bundle exec rspec
