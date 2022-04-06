@@ -34,7 +34,7 @@ jobs:
 
   build-rails:
     docker:
-      - image: circleci/ruby:2.6.5-stretch-node-browsers
+      - image: cimg/ruby:2.6.5-stretch-node-browsers
 
     steps:
       - checkout
