@@ -12,7 +12,7 @@ module Gnarails
           application.options = { webpack: "react", skip_yarn: false, skip_git: true }
           application.new("name")
 
-          default_options = "-m /Users/jarvis/Code/Gnar/gnarails/lib/../gnarly.rb --asset-pipeline=propshaft --skip-test-unit --css=tailwind --javascript=esbuild --database=postgresql"
+          default_options = "-m /Users/jarvis/Code/Gnar/gnarails/lib/../gnarly.rb --asset-pipeline=propshaft --skip-test-unit --css=scss --javascript=esbuild --database=postgresql"
           options = "#{default_options} --webpack=react --skip_git"
 
           expect(Kernel).to have_received(:system)

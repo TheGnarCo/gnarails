@@ -17,7 +17,7 @@ module Gnarails
         - skip test unit (We'll install rspec later)
         - use postgres over SQLlite,
         - use Propshaft,
-        - Bundle CSS with cssbundling (using tailwind)
+        - Bundle CSS with cssbundling (using scss)
         - bundle JS with esbuild
 
         You should also be able to pass any other arguments you would expect to
@@ -31,7 +31,7 @@ module Gnarails
       DEFAULT_OPTIONS = [
         "--asset-pipeline=propshaft",
         "--skip-test-unit",
-        "--css=tailwind",
+        "--css=scss",
         "--javascript=esbuild",
         "--database=postgresql",
       ].freeze
