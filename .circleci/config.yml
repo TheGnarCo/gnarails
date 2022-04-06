@@ -6,7 +6,7 @@ version: 2
 jobs:
   unit_test:
     docker:
-      - image: cimg/ruby:2.6.5-stretch-node-browsers
+      - image: circleci/ruby:2.6.5-stretch-node-browsers
         environment:
           RAILS_ENV: test
     steps:
@@ -34,7 +34,7 @@ jobs:
 
   build-rails:
     docker:
-      - image: cimg/ruby:2.6.5-stretch-node-browsers
+      - image: circleci/ruby:2.6.5-stretch-node-browsers
 
     steps:
       - checkout

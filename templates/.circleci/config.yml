@@ -5,7 +5,7 @@ jobs:
       - image: cimg/ruby:__ruby_image_suffix__
         environment:
           RAILS_ENV: test
-      - image: cimg/postgres:9.6.5
+      - image: cimg/postgres:9.6.24
     steps:
       - checkout
 
