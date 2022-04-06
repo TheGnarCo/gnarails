@@ -42,7 +42,7 @@ module Gnarails
         end
 
         def cli_options(options)
-          options_string = "-m #{Gnarails.template_file} " + DEFAULT_OPTIONS.join(' ')
+          options_string = "-m #{Gnarails.template_file} " + DEFAULT_OPTIONS.join(" ")
           options.each_with_object(options_string) do |(k, v), str|
             str << cli_option(k, v)
           end
