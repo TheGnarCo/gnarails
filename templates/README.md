@@ -3,11 +3,8 @@
 ## Setup
 
  ```sh
-$ bundle install
-$ bundle exec rake db:create
-$ bundle exec rake db:migrate
-$ bundle exec rake db:seed
-$ bundle exec rails s
+$ bin/setup
+$ bin/dev
 $ open http://localhost:3000
 ```
 
