@@ -31,7 +31,7 @@ module Gnarails
       DEFAULT_OPTIONS = [
         "--asset-pipeline=propshaft",
         "--skip-test-unit",
-        "--css=scss",
+        "--css=sass",
         "--javascript=esbuild",
         "--database=postgresql",
       ].freeze
