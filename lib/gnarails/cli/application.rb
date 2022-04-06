@@ -17,7 +17,7 @@ module Gnarails
         - skip test unit (We'll install rspec later)
         - use postgres over SQLlite,
         - use Propshaft,
-        - Bundle CSS with cssbundling (using scss)
+        - Bundle CSS with cssbundling (using sass)
         - bundle JS with esbuild
 
         You should also be able to pass any other arguments you would expect to

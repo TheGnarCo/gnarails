@@ -1,41 +1,38 @@
-version: 2.0
+version: 2.1
+orbs:
+  browser-tools: circleci/browser-tools@1.2.5
 jobs:
   build:
     docker:
-      - image: circleci/ruby:__ruby_version__-stretch-node-browsers
+      - image: cimg/ruby:__ruby_version__-browsers
         environment:
           RAILS_ENV: test
-      - image: circleci/postgres:9.6.5
+      - image: cimg/postgres:14.2
+        environment:
+          POSTGRES_PASSWORD: password
     steps:
+      - browser-tools/install-browser-tools
       - checkout
-
-      # Restore bundle cache
-      - restore_cache:
-          key: __application_name__-{{ checksum "Gemfile.lock" }}
 
       # cmake is required by Rugged, a dependency of Pronto
       - run:
           name: Install cmake
           command: sudo apt-get -y -qq update && sudo apt-get -y -qq install cmake
 
+      # Yarn install dependencies
+      - run:
+          name: install js dependencies
+          command: yarn install
+
       # Bundle install dependencies
       - run:
-          name: Install dependencies
-          command: bundle install --path vendor/bundle
-
-      # Store bundle cache
-      - save_cache:
-          key: __application_name__-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+          name: install ruby dependencies
+          command: bundle install
 
       # Database setup
       - run:
           name: Create database
-          command: bundle exec rake db:create
-      - run:
-          name: Load database schema
-          command: bundle exec rake db:schema:load
+          command: ./bin/setup
 
       # Tests
       - run:

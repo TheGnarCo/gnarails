@@ -49,7 +49,6 @@ def add_gems
     gem "pronto"
     gem "pronto-brakeman", require: false
     gem "pronto-rubocop", require: false
-    gem "pronto-scss", require: false
     gem "pry-byebug"
     gem "pry-rails"
     gem "rspec-its"
@@ -71,14 +70,24 @@ def setup_css
 end
 
 def setup_js
+  run "yarn add esbuild-rails"
   remove_file "esbuild.config.js"
   copy_file "templates/esbuild.config.js", "esbuild.config.js"
-  run "npm set-script build 'node esbuild.config.js'"
+  gsub_file "package.json",
+    "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
+    "node esbuild.config.js"
 end
 
 def setup_gitignore
-  remove_file ".gitignore"
-  copy_file "templates/.gitignore", ".gitignore"
+  append_to_file ".gitignore" do
+    <<~GITIGNORE
+      # Ignore Byebug command history file.
+      .byebug_history
+
+      # Ignore output of simplecov
+      coverage
+    GITIGNORE
+  end
 end
 
 def setup_testing
