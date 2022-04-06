@@ -20,4 +20,3 @@ cp test-app/spec/factories/job_postings.rb rails-test-app/spec/factories/job_pos
 cp test-app/spec/models/job_posting_spec.rb rails-test-app/spec/models/job_posting_spec.rb
 cp test-app/spec/system/viewing_all_job_postings_spec.rb rails-test-app/spec/system/viewing_all_job_postings_spec.rb
 cp test-app/spec/requests/status_spec.rb rails-test-app/spec/requests/status_spec.rb
-cp test-app/config/brakeman.ignore rails-test-app/config/brakeman.ignore
