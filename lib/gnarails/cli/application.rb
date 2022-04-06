@@ -169,13 +169,21 @@ module Gnarails
         Kernel.system command(name, options)
       end
 
+      DEFAULT_OPTIONS = [
+        "--asset-pipeline=propshaft",
+        "--skip-test-unit",
+        "--css=tailwind",
+        "--javascript=esbuild",
+        "--database=postgresql",
+      ].freeze
+
       no_tasks do
         def command(name, options)
           "rails new #{name} #{cli_options(options)}"
         end
 
         def cli_options(options)
-          options_string = "-m #{Gnarails.template_file} --skip-test-unit --database=postgresql"
+          options_string = "-m #{Gnarails.template_file} " + DEFAULT_OPTIONS.join(' ')
           options.each_with_object(options_string) do |(k, v), str|
             str << cli_option(k, v)
           end
