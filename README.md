@@ -92,7 +92,7 @@ end
 ## Running the Application
 
 ```sh
-$ bin/rails s
+$ bin/dev
 ```
 
 Visit `localhost:3000` in your browser
