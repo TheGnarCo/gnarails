@@ -21,8 +21,7 @@ def create_gnarly_rails_app
   after_bundle do
     setup_testing
     setup_database
-    setup_css
-    setup_js
+    setup_assets
     setup_gitignore
     setup_analysis
     setup_environments
@@ -66,10 +65,7 @@ def setup_database
   gsub_file "Gemfile", /.*sqlite.*\n/, ""
 end
 
-def setup_css
-end
-
-def setup_js
+def setup_assets
   run "yarn add esbuild-rails"
   remove_file "esbuild.config.js"
   copy_file "templates/esbuild.config.js", "esbuild.config.js"
