@@ -3,6 +3,8 @@
 ## Setup
 
  ```sh
+$ bundle install
+$ yarn install
 $ bin/setup
 $ bin/dev
 $ open http://localhost:3000
