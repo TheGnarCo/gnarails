@@ -19,7 +19,7 @@ def create_gnarly_rails_app
   run_bundle
 
   after_bundle do
-    remove_file "bin/setup"
+    remove_file "bin/setupo
     copy_file "templates/bin/setup", "bin/setup"
     run "chmod +x bin/setup"
 
@@ -216,8 +216,6 @@ end
 
 def setup_pronto
   copy_file "templates/.pronto.yml", ".pronto.yml"
-  copy_file "templates/bin/ci_pronto", "bin/ci_pronto"
-  run "chmod +x bin/ci_pronto"
 end
 
 def setup_brakeman
