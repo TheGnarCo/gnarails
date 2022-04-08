@@ -52,10 +52,7 @@ jobs:
       - name: Setup DB
         working-directory: './rails-test-app'
         env:
-          DATABASE_NAME: postgres
-          PG_HOST: localhost
-          PG_USER: postgres
-          PG_PASSWORD: password
+          DATABASE_PASSWORD: password
         run: bin/setup
 
       - name: Run tests
