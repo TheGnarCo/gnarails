@@ -92,6 +92,7 @@ end
 ## Running the Application
 
 ```sh
+$ bin/setup
 $ bin/dev
 ```
 
