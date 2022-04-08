@@ -68,7 +68,7 @@ jobs:
         run: sh ./bin/generate-test-app.sh
 
       - name: LS
-        run: LS
+        run: ls
 
       # - uses: actions/upload-artifact@master
       #   with:
