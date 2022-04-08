@@ -43,14 +43,14 @@ jobs:
       - name: Generate Test App
         run: bin/generate-test-app.sh
 
-      - name: CAT package.json just to see
-        working-directory: './rails-test-app'
-        run: cat package.json
-
       - name: Install packages
         working-directory: './rails-test-app'
         run: |
           yarn install --pure-lockfile
+
+      - name: Generate Assets
+        working-directory: './rails-test-app'
+        run: bin/rails assets:precompile
 
       - name: Setup DB
         working-directory: './rails-test-app'
