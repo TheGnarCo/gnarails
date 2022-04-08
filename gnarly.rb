@@ -19,9 +19,13 @@ def create_gnarly_rails_app
   run_bundle
 
   after_bundle do
+    remove_file "bin/setup"
+    copy_file "templates/bin/setup", "bin/setup"
+    run "chmod +x bin/setup"
+
     setup_testing
     setup_database
-    setup_scss
+    setup_assets
     setup_gitignore
     setup_analysis
     setup_environments
@@ -48,12 +52,11 @@ def add_gems
     gem "pronto"
     gem "pronto-brakeman", require: false
     gem "pronto-rubocop", require: false
-    gem "pronto-scss", require: false
     gem "pry-byebug"
     gem "pry-rails"
     gem "rspec-its"
-    gem "rspec-rails", "~> 3.7"
-    gem "scss_lint", require: false
+    gem "rspec-rails", "~> 4"
+    gem "rubocop-rspec", require: false
     gem "shoulda-matchers"
     gem "simplecov", require: false
   end
@@ -63,17 +66,28 @@ def setup_database
   remove_file "config/database.yml"
   copy_file "templates/database.yml", "config/database.yml"
   gsub_file "config/database.yml", "__application_name__", app_name
-
   gsub_file "Gemfile", /.*sqlite.*\n/, ""
 end
 
-def setup_scss
-  run "mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss"
+def setup_assets
+  run "yarn add esbuild-rails"
+  remove_file "esbuild.config.js"
+  copy_file "templates/esbuild.config.js", "esbuild.config.js"
+  gsub_file "package.json",
+    "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
+    "node esbuild.config.js"
 end
 
 def setup_gitignore
-  remove_file ".gitignore"
-  copy_file "templates/.gitignore", ".gitignore"
+  append_to_file ".gitignore" do
+    <<~GITIGNORE
+      # Ignore Byebug command history file.
+      .byebug_history
+
+      # Ignore output of simplecov
+      coverage
+    GITIGNORE
+  end
 end
 
 def setup_testing
@@ -92,6 +106,7 @@ def setup_rspec
   gsub_file "spec/rails_helper.rb",
     /# Dir\[Rails\.root\.join.*/,
     "Dir[Rails.root.join(\"spec/support/**/*.rb\")].each { |f| require f }"
+  run "bundle binstubs rspec-core"
 end
 
 def setup_factory_bot
@@ -197,7 +212,6 @@ end
 
 def setup_linting
   copy_file "templates/.rubocop.yml", ".rubocop.yml"
-  copy_file "templates/.scss-lint.yml", ".scss-lint.yml"
 end
 
 def setup_pronto
@@ -308,7 +322,7 @@ def post_install_instructions
 end
 
 def format_ruby
-  run "bundle exec rubocop --auto-correct"
+  run "bundle exec rubocop -A"
 end
 
 def completion_notification

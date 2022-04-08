@@ -31,7 +31,7 @@ are expected to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
 4. Include tests to verify the change performs as expected.
 5. Run the test suite locally to ensure the change doesn't affect other
    functionality.
-   * `bundle exec rspec`
+   * `bin/rspec`
 6. Commit progress in [atomic commits](https://en.wikipedia.org/wiki/Atomic_commit).
    * `git commit -am "A message with an informative title, and detailed description
 in subsequent paragraphs"`

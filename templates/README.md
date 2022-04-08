@@ -4,10 +4,9 @@
 
  ```sh
 $ bundle install
-$ bundle exec rake db:create
-$ bundle exec rake db:migrate
-$ bundle exec rake db:seed
-$ bundle exec rails s
+$ yarn install
+$ bin/setup
+$ bin/dev
 $ open http://localhost:3000
 ```
 
@@ -64,7 +63,7 @@ $ docker-compose up
 
 To run rspec:
 ```sh
-$ docker-compose run web bundle exec rspec
+$ docker-compose run web ./bin/rspec
 ```
 
 ### Using pry with Docker
