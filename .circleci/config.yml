@@ -119,7 +119,7 @@ jobs:
       # Database setup
       - run:
           name: Create database
-          command: bin/rails db:setup
+          command: bin/rails db:migrate
 
       # Generate Assets
       - run:
