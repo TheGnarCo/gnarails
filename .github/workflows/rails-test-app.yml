@@ -64,6 +64,4 @@ jobs:
         with:
           name: rails-test-app
 
-      - run: ls
-
       - uses: ./.github/actions/test-rails.yml
