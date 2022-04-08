@@ -1,5 +1,5 @@
 name: Test Rails App
-on: [push]
+on: [push,workflow_call]
 
 jobs:
   build-app:

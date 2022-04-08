@@ -2,10 +2,11 @@ name: Run Tests
 on: [push]
 
 jobs:
-  unit-test:
+  run-tests:
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
+      DATABASE_PASSWORD: password
     services:
       postgres:
         image: postgres:14
@@ -21,22 +22,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14
-
-      - run: corepack enable
-
-      - name: Prep Environment
-        run: |
-          bin/setup
-
-      - name: Run Tests
-        run: |
-          bin/rspec
+      - uses: ./.github/actions/test-rails.yml

@@ -248,7 +248,7 @@ end
 
 def setup_environments
   setup_dotenv
-  setup_ci
+  setup_github_workflows
   setup_docker
   setup_procfile
   configure_i18n
@@ -261,8 +261,10 @@ def setup_dotenv
   gsub_file ".env.test", "__application_name__", app_name
 end
 
-def setup_ci
+def setup_github_workflows
   copy_file "templates/.github/workflows/run-tests.yml", ".github/workflows/run-tests.yml"
+  copy_file ".github/actions/test-rails.yml", ".github/actions/test-rails.yml"
+  copy_file ".github/workflows/pronto.yml", ".github/workflows/pronto.yml"
 end
 
 def setup_docker
