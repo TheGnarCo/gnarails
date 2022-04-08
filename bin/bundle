@@ -55,12 +55,6 @@ m = Module.new do
     File.expand_path(lockfile)
   end
 
-
-
-
-
-
-
   def lockfile_version
     return unless File.file?(lockfile)
 
