@@ -2,7 +2,7 @@ name: Test Rails App
 on: [push]
 
 jobs:
-  build-test-app:
+  rails-test-app:
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
@@ -38,7 +38,6 @@ jobs:
       - name: Generate Test App
         run: bin/generate-test-app.sh
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: rails-test-app
-          path: ./rails-test-app
+      - name: Test The Test App
+        uses: .github/actions/test-rails.yml
+        working_directory: ./rails-test-app

@@ -1,0 +1,19 @@
+name: 'Test Rails - The Gnar Way'
+description: 'A complete Rails setup action, including testing, brakeman, and bundler audit.'
+runs:
+  using: "composite"
+  steps:
+    - name: Setup App Dependencies
+      run: bin/setup
+
+    - name: Generate Assets
+      run: bin/rails assets:precompile
+
+    - name: Run tests
+      run: bundle exec rspec
+
+    - name: Bundler Audit
+      run: bin/bundle bundle-audit update && bundle exec bundle-audit check
+
+    - name: Brakeman
+      run: bin/brakeman
