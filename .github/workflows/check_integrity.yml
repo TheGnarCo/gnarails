@@ -2,7 +2,7 @@ name: Check Integrity
 on: [push]
 
 jobs:
-  unit_test:
+  unit-test:
     name: Unit Test
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +51,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          node-version: 10.13.0
+          node-version: 14
+        run: yarn install
 
       # - name: Setup test database
       #   env:
