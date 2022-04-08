@@ -19,15 +19,14 @@ def create_gnarly_rails_app
   run_bundle
 
   after_bundle do
-    remove_file "bin/setup"
-    copy_file "templates/bin/setup", "bin/setup"
-    run "chmod +x bin/setup"
-
     setup_testing
     setup_database
     setup_assets
     setup_gitignore
-    setup_analysis
+    setup_binstubs
+    setup_linting
+    setup_pronto
+    setup_simplecov
     setup_environments
     setup_readme
     remove_dir "test"
@@ -106,7 +105,6 @@ def setup_rspec
   gsub_file "spec/rails_helper.rb",
     /# Dir\[Rails\.root\.join.*/,
     "Dir[Rails.root.join(\"spec/support/**/*.rb\")].each { |f| require f }"
-  run "bundle binstubs rspec-core"
 end
 
 def setup_factory_bot
@@ -203,11 +201,19 @@ def limit_test_logging
   end
 end
 
-def setup_analysis
-  setup_linting
-  setup_pronto
-  setup_brakeman
-  setup_simplecov
+def setup_binstubs
+  remove_file "bin/setup"
+  copy_file "templates/bin/setup", "bin/setup"
+  run "chmod +x bin/setup"
+
+  copy_file "templates/bin/brakeman", "bin/brakeman"
+  run "chmod +x bin/brakeman"
+
+  copy_file "templates/bin/rspec", "bin/rspec"
+  run "chmod +x bin/rspec"
+
+  copy_file "templates/bin/rubocop", "bin/rubocop"
+  run "chmod +x bin/rubocop"
 end
 
 def setup_linting
@@ -216,11 +222,11 @@ end
 
 def setup_pronto
   copy_file "templates/.pronto.yml", ".pronto.yml"
-end
 
-def setup_brakeman
-  copy_file "templates/bin/brakeman", "bin/brakeman"
-  run "chmod +x bin/brakeman"
+  copy_file "templates/bin/pronto", "bin/pronto"
+  run "chmod +x bin/pronto"
+
+  copy_file ".github/workflows/pronto.yml", ".github/workflows/pronto.yml"
 end
 
 def setup_simplecov
@@ -256,9 +262,7 @@ def setup_dotenv
 end
 
 def setup_ci
-  copy_file "templates/.circleci/config.yml", ".circleci/config.yml"
-  gsub_file ".circleci/config.yml", "__ruby_version__", RUBY_VERSION
-  gsub_file ".circleci/config.yml", "__application_name__", app_name
+  copy_file "templates/.github/workflows/run-tests.yml", ".github/workflows/run-tests.yml"
 end
 
 def setup_docker
