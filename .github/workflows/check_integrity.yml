@@ -9,6 +9,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.12
+        with:
+          cmake-version: '3.16.x'
+
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
         with:
@@ -33,6 +38,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.12
+        with:
+          cmake-version: '3.16.x'
+
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
         with:
@@ -43,13 +53,13 @@ jobs:
         with:
           node-version: 10.13.0
 
-      - name: Setup test database
-        env:
-          RAILS_ENV: test
-          PGHOST: localhost
-          PGUSER: myapp
-        run: |
-          bin/setup
+      # - name: Setup test database
+      #   env:
+      #     RAILS_ENV: test
+      #     PGHOST: localhost
+      #     PGUSER: myapp
+      #   run: |
+      #     bin/setup
 
       - name: Generate Test App
         run: sh ./bin/generate-test-app.sh
