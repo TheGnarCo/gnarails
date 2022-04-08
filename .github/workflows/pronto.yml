@@ -10,13 +10,4 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-
-      - run: gem install gnar-style
-
       - uses: HeRoMo/pronto-action@v1.31.0
