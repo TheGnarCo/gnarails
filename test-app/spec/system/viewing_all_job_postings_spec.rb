@@ -10,12 +10,12 @@ RSpec.feature "Viewing all job postings", type: :system do
 
   scenario "N+1 query proteection" do
     job_posting = create :job_posting
-    job_posting.comments.create(body: "first comment")
-    job_posting.comments.create(body: "second comment")
+    job_posting.comments.create!(body: "first comment")
+    job_posting.comments.create!(body: "second comment")
 
     another_posting = create :job_posting
-    another_posting.comments.create(body: "third comment")
-    another_posting.comments.create(body: "fourth comment")
+    another_posting.comments.create!(body: "third comment")
+    another_posting.comments.create!(body: "fourth comment")
 
     expect { visit job_postings_path }
       .to raise_error Bullet::Notification::UnoptimizedQueryError
