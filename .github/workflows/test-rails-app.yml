@@ -4,6 +4,7 @@ on: [push, workflow_call]
 jobs:
   test-rails-app:
     runs-on: ubuntu-latest
+    needs: build-test-app
     env:
       RAILS_ENV: test
       DATABASE_PASSWORD: password

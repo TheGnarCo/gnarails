@@ -42,9 +42,3 @@ jobs:
         with:
           name: rails-test-app
           path: ./rails-test-app
-
-      - uses: ./.github/workflows/test-rails-app.yml
-        with:
-          defaults:
-            run:
-              working-directory: ./rails-test-app
