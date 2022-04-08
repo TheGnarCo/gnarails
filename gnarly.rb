@@ -19,7 +19,7 @@ def create_gnarly_rails_app
   run_bundle
 
   after_bundle do
-    remove_file "bin/setupo
+    remove_file "bin/setup"
     copy_file "templates/bin/setup", "bin/setup"
     run "chmod +x bin/setup"
 
