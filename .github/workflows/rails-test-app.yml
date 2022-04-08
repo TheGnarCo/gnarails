@@ -66,6 +66,4 @@ jobs:
 
       - run: ls
 
-      - name: Test The Test App
-        uses: ./.github/actions/test-rails.yml
-        working-directory: ./rails-test-app
+      - uses: ./.github/actions/test-rails.yml
