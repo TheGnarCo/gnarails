@@ -216,6 +216,8 @@ end
 
 def setup_pronto
   copy_file "templates/.pronto.yml", ".pronto.yml"
+  copy_file "templates/bin/ci_pronto", "bin/ci_pronto"
+  run "chmod +x bin/ci_pronto"
 end
 
 def setup_brakeman

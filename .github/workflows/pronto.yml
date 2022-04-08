@@ -10,4 +10,16 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v3
-      - uses: HeRoMo/pronto-action@v1.31.0
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.12
+        with:
+          cmake-version: '3.16.x'
+          github-api-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - run: bin/ci_pronto
