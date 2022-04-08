@@ -1,13 +1,12 @@
 name: Pronto
+
 on:
-  pull_request:
-    types: [opened, synchronize]
+  - push
+  - pull_request
+
 jobs:
-  pronto:
+  run:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      statuses: write
     steps:
       - uses: actions/checkout@v3
       - run: git fetch origin main --depth=1
