@@ -1,4 +1,7 @@
 #!/bin/bash
 #
 # Script for running pronto on CI
+export PRONTO_PULL_REQUEST_ID=${CI_PULL_REQUEST##*/}
+
+git fetch origin main
 bundle exec pronto run -f text github_pr_review github_status -c origin/main
