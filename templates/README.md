@@ -63,7 +63,7 @@ $ docker-compose up
 
 To run rspec:
 ```sh
-$ docker-compose run web bundle exec rspec
+$ docker-compose run web ./bin/rspec
 ```
 
 ### Using pry with Docker

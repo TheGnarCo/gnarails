@@ -37,7 +37,7 @@ jobs:
       # Tests
       - run:
           name: RSpec
-          command: bundle exec rspec
+          command: ./bin/rspec
 
       # Security analysis
       - run:

@@ -28,7 +28,7 @@ jobs:
       # Tests
       - run:
           name: RSpec
-          command: bundle exec rspec
+          command: ./bin/rspec
 
       # Pronto
       - run:
@@ -129,7 +129,7 @@ jobs:
       # Tests
       - run:
           name: RSpec
-          command: bundle exec rspec
+          command: ./bin/rspec
 
      # Security analysis
       - run:

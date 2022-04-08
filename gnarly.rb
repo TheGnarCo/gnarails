@@ -102,6 +102,7 @@ def setup_rspec
   gsub_file "spec/rails_helper.rb",
     /# Dir\[Rails\.root\.join.*/,
     "Dir[Rails.root.join(\"spec/support/**/*.rb\")].each { |f| require f }"
+  run "bundle binstubs rspec-core"
 end
 
 def setup_factory_bot

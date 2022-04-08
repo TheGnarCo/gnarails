@@ -14,7 +14,7 @@ RSpec.describe "Sample App Integration Testing" do
     it "runs test-app suite" do
       Bundler.with_unbundled_env do
         Dir.chdir("rails-test-app") do
-          `bundle exec rspec`
+          `bin/rspec`
           test_app_result = $CHILD_STATUS.success?
 
           expect(test_app_result).to be true
