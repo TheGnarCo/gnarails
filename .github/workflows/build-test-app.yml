@@ -1,0 +1,50 @@
+name: Test Rails App
+on: [push]
+
+jobs:
+  build-test-app:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      DATABASE_PASSWORD: password
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_PASSWORD: password
+        ports: ["5432:5432"]
+        options:
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Bundle install
+        run: bundle install
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - run: corepack enable
+
+      - name: Generate Test App
+        run: bin/generate-test-app.sh
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: rails-test-app
+          path: ./rails-test-app
+
+      - uses: ./.github/workflows/test-rails-app.yml
+        with:
+          defaults:
+            run:
+              working-directory: ./rails-test-app
