@@ -13,4 +13,6 @@ jobs:
         with:
           fetch-depth: 0
 
+      - run: bin/bundle install
+
       - uses: HeRoMo/pronto-action@v1.31.0
