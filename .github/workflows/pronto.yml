@@ -12,10 +12,17 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - run: |
+          git fetch --no-tags --prune --depth=10 origin +refs/heads/*:refs/remotes/origin/*
 
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
 
-      - run: bin/bundle install
-
-      - run: bin/pronto run -c origin/${{ github.base_ref }} -f text github_pr_review github_status
+      - name: Run Pronto
+        env:
+          PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
+          PRONTO_GITHUB_SLUG: {owner}/{repo}
+        run: |
+          bin/pronto run -c origin/${{ github.base_ref }} -f text github_pr_review github_status
