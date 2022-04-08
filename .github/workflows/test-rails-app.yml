@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
+      DATABASE_PASSWORD: password
     services:
       postgres:
         image: postgres:14
@@ -48,13 +49,9 @@ jobs:
 
       - name: Setup DB
         working-directory: './rails-test-app'
-        env:
-          DATABASE_PASSWORD: password
         run: bin/setup
 
       - name: Run tests
-        env:
-          DATABASE_PASSWORD: password
         working-directory: './rails-test-app'
         run: bundle exec rspec
 
