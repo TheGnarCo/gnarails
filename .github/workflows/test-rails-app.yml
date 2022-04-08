@@ -4,99 +4,60 @@ on: [push]
 jobs:
   test-rails-app:
     runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
     services:
       postgres:
         image: postgres:14
         env:
-          POSTGRES_USER: myapp
-          POSTGRES_DB: myapp_test
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: password
         ports: ["5432:5432"]
+        options:
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - run: echo "HEY"
-      - run: echo ${{ secrets.GITHUB_TOKEN }}
-      - run: echo "HEY"
-      # - name: Setup cmake
-      #   uses: jwlawson/actions-setup-cmake@v1.12
-      #   with:
-      #     github-api-token: ${{ secrets.GITHUB_TOKEN }}
-      #     cmake-version: '3.16.x'
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.12
+        with:
+          github-api-token: ${{ secrets.GITHUB_TOKEN }}
+          cmake-version: '3.16.x'
 
-      - name: Setup Ruby and install gems
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
 
-      - name: Generate Binstubs
-        run: bundle binstubs bundler
+      - Name: Bundle install
+        run: bundle install
 
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 14
+          cache: yarn
 
-      # - name: Setup test database
-      #   env:
-      #     RAILS_ENV: test
-      #     PGHOST: localhost
-      #     PGUSER: myapp
-      #   run: |
-      #     bin/setup
+      - run: corepack enable
 
       - name: Generate Test App
-        run: /bin/generate-test-app.sh
+        run: bin/generate-test-app.sh
 
-      - name: LS
-        run: ls
+      - name: Install packages
+        working-directory: './rails-test-app'
+        run: |
+          yarn install --pure-lockfile
 
-      # - uses: actions/upload-artifact@master
-      #   with:
-      #     name: rails-test-app
-      #     path: path/to/artifact
+      - name: Setup DB
+        working-directory: './rails-test-app'
+        env:
+          DATABASE_NAME: postgres
+          PG_HOST: localhost
+          PG_USER: postgres
+          PG_PASSWORD: password
+        run: bin/setup
 
-#     services:
-#       postgres:
-#         image: postgres:11
-#         env:
-#           POSTGRES_USER: myapp
-#           POSTGRES_DB: myapp_test
-#           POSTGRES_PASSWORD: ""
-#         ports: ["5432:5432"]
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: Setup Ruby and install gems
-#         uses: ruby/setup-ruby@v1
-#         with:
-#           bundler-cache: true
-
-#       - name: Setup Node
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: 10.13.0
-#       - name: Find yarn cache location
-#         id: yarn-cache
-#         run: echo "::set-output name=dir::$(yarn cache dir)"
-#       - name: JS package cache
-#         uses: actions/cache@v1
-#         with:
-#           path: ${{ steps.yarn-cache.outputs.dir }}
-#           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-#           restore-keys: |
-#             ${{ runner.os }}-yarn-
-#       - name: Install packages
-#         run: |
-#           yarn install --pure-lockfile
-
-#       - name: Setup test database
-#         env:
-#           RAILS_ENV: test
-#           PGHOST: localhost
-#           PGUSER: myapp
-#         run: |
-#           bin/rails db:setup
-
-#       - name: Run tests
-#         run: bin/rspec
+      - name: Run tests
+        working-directory: './rails-test-app'
+        run: bundle exec rspec
