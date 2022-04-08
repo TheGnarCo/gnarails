@@ -60,4 +60,6 @@ jobs:
 
       - name: Run tests
         working-directory: './rails-test-app'
+        env:
+          DATABASE_PASSWORD: password
         run: bundle exec rspec
