@@ -19,7 +19,7 @@ jobs:
           bundle exec rspec
 
   build-rails:
-    name: Build Rail
+    name: Build Rails
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -49,7 +49,7 @@ jobs:
           PGHOST: localhost
           PGUSER: myapp
         run: |
-          bin/setups
+          bin/setup
 
       - name: Generate Test App
         run: sh ./bin/generate-test-app.sh
