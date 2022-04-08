@@ -39,5 +39,5 @@ jobs:
         run: bin/generate-test-app.sh
 
       - name: Test The Test App
-        uses: .github/actions/test-rails.yml
+        uses: ./.github/actions/test-rails.yml
         working_directory: ./rails-test-app
