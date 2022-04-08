@@ -18,4 +18,4 @@ jobs:
 
       - run: bin/bundle install
 
-      - run: bin/pronto run ${GITHUB_WORKSPACE}/. -c origin/${{ github.base_ref }} -f text github_pr_review github_status
+      - run: bin/pronto run ${{ github.workspace }}/. -c origin/${{ github.base_ref }} -f text github_pr_review github_status
