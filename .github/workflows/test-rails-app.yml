@@ -2,7 +2,7 @@ name: Test Rails App
 on: [push]
 
 jobs:
-  test-rails-app:
+  build-app:
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
@@ -38,6 +38,27 @@ jobs:
       - name: Generate Test App
         run: bin/generate-test-app.sh
 
+  test-rails-app:
+    runs-on: ubuntu-latest
+    needs: build-app
+    defaults:
+      run:
+        working-directory: ./rails-test-app
+    env:
+      RAILS_ENV: test
+      DATABASE_PASSWORD: password
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_PASSWORD: password
+        ports: ["5432:5432"]
+        options:
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
       - name: Install packages
         working-directory: './rails-test-app'
         run: |
