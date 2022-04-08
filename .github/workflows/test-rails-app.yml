@@ -49,12 +49,10 @@ jobs:
 
       - name: Setup DB
         working-directory: './rails-test-app'
-        env:
         run: bin/setup
 
       - name: Run tests
         working-directory: './rails-test-app'
-        env:
         run: bundle exec rspec
 
       - name: Bundler Audit
