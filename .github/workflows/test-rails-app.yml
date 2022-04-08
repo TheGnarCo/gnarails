@@ -53,6 +53,8 @@ jobs:
         run: bin/setup
 
       - name: Run tests
+        env:
+          DATABASE_PASSWORD: password
         working-directory: './rails-test-app'
         run: bundle exec rspec
 
