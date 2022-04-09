@@ -25,6 +25,3 @@ runs:
     - name: Run tests
       shell: bash
       run: bin/rspec
-
-    - name: Simplecov Report
-      uses: aki77/simplecov-report-action@v1
