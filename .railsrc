@@ -1,5 +1,0 @@
---asset-pipeline=propshaft
---skip-test-unit
---css=sass
---javascript=esbuild
---database=postgresql
