@@ -332,6 +332,7 @@ def completion_notification
   puts ""
   ascii_art
   post_install_instructions
+  puts ""
 end
 
 create_gnarly_rails_app
