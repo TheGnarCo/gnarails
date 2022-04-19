@@ -1,0 +1,87 @@
+name: Test Generated App
+on: [push]
+
+jobs:
+  build-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+
+      # We have to rely on an additional bundle install for
+      # the local gnarails script to run properly.
+      - name: Install Ruby Dependencies
+        run: bundle install
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Generate Test App
+        run: |
+          bundle exec exe/gnarails new rails-test-app
+
+          mkdir rails-test-app/app/views/job_postings
+          mkdir rails-test-app/db/migrate
+          mkdir rails-test-app/spec/factories
+          mkdir rails-test-app/spec/models
+          mkdir rails-test-app/spec/system
+          mkdir rails-test-app/spec/requests
+
+          cp test-app/app/controllers/job_postings_controller.rb rails-test-app/app/controllers/job_postings_controller.rb
+          cp test-app/app/models/job_posting.rb rails-test-app/app/models/job_posting.rb
+          cp test-app/app/models/comment.rb rails-test-app/app/models/comment.rb
+          cp test-app/app/views/job_postings/index.html.erb rails-test-app/app/views/job_postings/index.html.erb
+          yes | cp test-app/app/views/layouts/application.html.erb rails-test-app/app/views/layouts/application.html.erb
+          yes | cp test-app/config/routes.rb rails-test-app/config/routes.rb
+          cp test-app/db/migrate/20170918002433_create_job_postings.rb rails-test-app/db/migrate/20170918002433_create_job_postings.rb
+          cp test-app/db/migrate/20170918002455_create_comments.rb rails-test-app/db/migrate/20170918002455_create_comments.rb
+          cp test-app/spec/factories/job_postings.rb rails-test-app/spec/factories/job_postings.rb
+          cp test-app/spec/models/job_posting_spec.rb rails-test-app/spec/models/job_posting_spec.rb
+          cp test-app/spec/system/viewing_all_job_postings_spec.rb rails-test-app/spec/system/viewing_all_job_postings_spec.rb
+          cp test-app/spec/requests/status_spec.rb rails-test-app/spec/requests/status_spec.rb
+
+      - name: Tar files
+        run: tar -czvf rails_test_app.tar -C rails-test-app .
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: rails-test-app
+          path: ./rails_test_app.tar
+
+  rails-test-app:
+    runs-on: ubuntu-latest
+    needs: build-app
+    env:
+      RAILS_ENV: test
+      DATABASE_PASSWORD: password
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_PASSWORD: password
+        ports: ["5432:5432"]
+        options:
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      # Do not checkout the repo here - this is intentionally running of of the generated app!
+      - uses: actions/download-artifact@v2
+        with:
+          name: rails-test-app
+
+      - name: Un-Tar files
+        run: tar -xvf rails_test_app.tar
+
+      # running this from the generated app, not the Gem
+      - name: Run Tests
+        uses: ./.github/actions/test-rails
+
+      - name: Ensure app has no rubocop warnings
+        run: bin/rubocop --fail-level warning

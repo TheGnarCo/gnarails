@@ -19,15 +19,14 @@ def create_gnarly_rails_app
   run_bundle
 
   after_bundle do
-    remove_file "bin/setup"
-    copy_file "templates/bin/setup", "bin/setup"
-    run "chmod +x bin/setup"
-
     setup_testing
+    setup_binstubs
     setup_database
     setup_assets
     setup_gitignore
-    setup_analysis
+    setup_linting
+    setup_pronto
+    setup_simplecov
     setup_environments
     setup_readme
     remove_dir "test"
@@ -42,7 +41,6 @@ def add_gems
     gem "axe-core-capybara"
     gem "axe-core-rspec"
     gem "bullet"
-    gem "bundler-audit"
     gem "dotenv-rails"
     gem "factory_bot_rails"
     gem "gnar-style", require: false
@@ -50,7 +48,6 @@ def add_gems
     gem "lol_dba"
     gem "okcomputer"
     gem "pronto"
-    gem "pronto-brakeman", require: false
     gem "pronto-rubocop", require: false
     gem "pry-byebug"
     gem "pry-rails"
@@ -73,9 +70,7 @@ def setup_assets
   run "yarn add esbuild-rails"
   remove_file "esbuild.config.js"
   copy_file "templates/esbuild.config.js", "esbuild.config.js"
-  gsub_file "package.json",
-    "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
-    "node esbuild.config.js"
+  run "npm set-script build 'node esbuild.config.js'"
 end
 
 def setup_gitignore
@@ -106,7 +101,6 @@ def setup_rspec
   gsub_file "spec/rails_helper.rb",
     /# Dir\[Rails\.root\.join.*/,
     "Dir[Rails.root.join(\"spec/support/**/*.rb\")].each { |f| require f }"
-  run "bundle binstubs rspec-core"
 end
 
 def setup_factory_bot
@@ -203,11 +197,16 @@ def limit_test_logging
   end
 end
 
-def setup_analysis
-  setup_linting
-  setup_pronto
-  setup_brakeman
-  setup_simplecov
+def setup_binstubs
+  remove_file "bin/setup"
+  copy_file "templates/bin/setup", "bin/setup"
+  run "chmod +x bin/setup"
+
+  copy_file "templates/bin/rspec", "bin/rspec"
+  run "chmod +x bin/rspec"
+
+  copy_file "templates/bin/rubocop", "bin/rubocop"
+  run "chmod +x bin/rubocop"
 end
 
 def setup_linting
@@ -216,13 +215,11 @@ end
 
 def setup_pronto
   copy_file "templates/.pronto.yml", ".pronto.yml"
-  copy_file "templates/bin/ci_pronto", "bin/ci_pronto"
-  run "chmod +x bin/ci_pronto"
-end
 
-def setup_brakeman
-  copy_file "templates/bin/brakeman", "bin/brakeman"
-  run "chmod +x bin/brakeman"
+  copy_file "templates/bin/pronto", "bin/pronto"
+  run "chmod +x bin/pronto"
+
+  copy_file ".github/workflows/pronto.yml", ".github/workflows/pronto.yml"
 end
 
 def setup_simplecov
@@ -244,7 +241,7 @@ end
 
 def setup_environments
   setup_dotenv
-  setup_ci
+  setup_github_workflows
   setup_docker
   setup_procfile
   configure_i18n
@@ -257,10 +254,12 @@ def setup_dotenv
   gsub_file ".env.test", "__application_name__", app_name
 end
 
-def setup_ci
-  copy_file "templates/.circleci/config.yml", ".circleci/config.yml"
-  gsub_file ".circleci/config.yml", "__ruby_version__", RUBY_VERSION
-  gsub_file ".circleci/config.yml", "__application_name__", app_name
+def setup_github_workflows
+  copy_file "templates/.github/workflows/run-tests.yml", ".github/workflows/run-tests.yml"
+  copy_file "templates/.github/workflows/brakeman.yml", ".github/workflows/brakeman.yml"
+
+  copy_file ".github/actions/test-rails/action.yml", ".github/actions/test-rails/action.yml"
+  copy_file ".github/workflows/bundler-audit.yml", ".github/workflows/bundler-audit.yml"
 end
 
 def setup_docker
@@ -319,16 +318,21 @@ def post_install_instructions
   puts "* Install ChromeDriver for default headless acceptance tests: brew cask install chromedriver"
   puts "* Follow the post-install instructions to set up circle to allow gnarbot to comment on PRs."
   puts "  * https://github.com/TheGnarCo/gnarails#post-install"
+  puts "=========="
+  puts "* Make sure your package.json has the following scripts:"
+  puts "* \`\"build\": \"node esbuild.config.js\"\`"
+  puts "* \`\"build:css\": \"sass ./app/assets/stylesheets/application.sass.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules\"\`"
 end
 
 def format_ruby
-  run "bundle exec rubocop -A"
+  run "bin/rubocop -A"
 end
 
 def completion_notification
   puts ""
   ascii_art
   post_install_instructions
+  puts ""
 end
 
 create_gnarly_rails_app
