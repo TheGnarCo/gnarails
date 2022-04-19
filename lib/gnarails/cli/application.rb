@@ -5,7 +5,7 @@ module Gnarails
   module Cli
     class Application < Thor
       include Thor::Actions
-      RAILS_RC_FLAG = '--rc=.railsrc'
+      RAILS_RC_FLAG = "--rc=.railsrc".freeze
 
       add_runtime_options!
 
