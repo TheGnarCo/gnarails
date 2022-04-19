@@ -5,6 +5,7 @@ module Gnarails
   module Cli
     class Application < Thor
       include Thor::Actions
+      RAILS_RC_FLAG = '--rc=.railsrc'
 
       add_runtime_options!
 
@@ -25,7 +26,7 @@ module Gnarails
 
       no_tasks do
         def command(name, options)
-          "rails new #{name} --rc=.railsrc"
+          "rails new #{name} #{RAILS_RC_FLAG}"
         end
       end
     end
