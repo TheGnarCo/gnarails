@@ -1,9 +1,11 @@
 require "thor"
+require "net/http"
 
 module Gnarails
   module Cli
     class Application < Thor
       include Thor::Actions
+      RAILS_RC_FLAG = "--rc=.railsrc".freeze
 
       add_runtime_options!
 
@@ -13,50 +15,18 @@ module Gnarails
         pre-built with the same helpful default configuration you can expect from
         any rails project built by The Gnar Company.
 
-        By default, we pass arguments to `rails new` that:
-        - skip test unit (We'll install rspec later)
-        - use postgres over SQLlite,
-        - use Propshaft,
-        - Bundle CSS with cssbundling (using sass)
-        - bundle JS with esbuild
-
-        You should also be able to pass any other arguments you would expect to
-        be able to when generating a new rails app. Use `rails -h` for more
-        information.
+        Learn more about our Rails Configuration here: https://github.com/TheGnarCo/.gnarrc
       LONGDESC
-      def new(name)
-        Kernel.system command(name, options)
-      end
 
-      DEFAULT_OPTIONS = [
-        "--asset-pipeline=propshaft",
-        "--skip-test-unit",
-        "--css=sass",
-        "--javascript=esbuild",
-        "--database=postgresql",
-      ].freeze
+      def new(name)
+        create_file ".railsrc", Net::HTTP.get(URI("https://raw.githubusercontent.com/TheGnarCo/.gnarrc/main/rails/7/.railsrc"))
+        Kernel.system command(name, options)
+        remove_file ".railsrc"
+      end
 
       no_tasks do
         def command(name, options)
-          "rails new #{name} #{cli_options(options)}"
-        end
-
-        def cli_options(options)
-          options_string = "-m #{Gnarails.template_file} " + DEFAULT_OPTIONS.join(" ")
-          options.each_with_object(options_string) do |(k, v), str|
-            str << cli_option(k, v)
-          end
-        end
-
-        def cli_option(key, value)
-          case value
-          when false
-            ""
-          when true
-            " --#{key}"
-          else
-            " --#{key}=#{value}"
-          end
+          "rails new #{name} #{RAILS_RC_FLAG}"
         end
       end
     end
