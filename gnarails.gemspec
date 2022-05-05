@@ -31,4 +31,14 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.metadata["rubygems_mfa_required"] = "true"
+  spec.post_install_message = %(
+    ==============================
+    THIS GEM HAS BEEN DEPRECATED!
+    ==============================
+    If you are looking to initialize
+    Rails apps with Gnarly Opinions,
+    check out Gnar-CLI:
+
+    github.com/theGnarCo/gnar-cli
+  )
 end
