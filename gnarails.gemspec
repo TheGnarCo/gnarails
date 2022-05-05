@@ -39,6 +39,6 @@ Gem::Specification.new do |spec|
     Rails apps with Gnarly Opinions,
     check out Gnar-CLI:
 
-    github.com/theGnarCo/gnar-cli
+    https://www.github.com/theGnarCo/gnar-cli
   )
 end
