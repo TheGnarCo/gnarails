@@ -1,6 +1,6 @@
 # This Gem has been Deprecated
 
-If you are looking to build rails apps with Gnarly Opinions, check out the `init` command of [`gnar-cli`](github.com/theGnarCo/gnar-cli).
+If you are looking to build rails apps with Gnarly Opinions, check out the `init` command of [`gnar-cli`](https://www.github.com/theGnarCo/gnar-cli).
 
 # Gnarails
 
